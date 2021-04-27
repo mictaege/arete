@@ -1,6 +1,8 @@
 package com.github.mictaege.arete;
-import static com.github.mictaege.arete.Tools.capitalize;
-import static com.github.mictaege.arete.Tools.uncapitalize;
+
+import static com.github.mictaege.arete.NamingTools.Capitalizer.CAPITALIZE_ALL;
+import static com.github.mictaege.arete.NamingTools.Capitalizer.UN_CAPITALIZE_ALL;
+import static com.github.mictaege.arete.NamingTools.toWords;
 import static java.lang.Math.max;
 import static java.util.Optional.ofNullable;
 import static org.junit.platform.commons.support.AnnotationSupport.findAnnotation;
@@ -23,13 +25,13 @@ public class ScenarioNameGenerator implements DisplayNameGenerator {
     @Override
     public String generateDisplayNameForNestedClass(final Class<?> nestedClass) {
         return desc(nestedClass)
-                .orElse("Scenario: " + capitalize(nestedClass.getSimpleName()));
+                .orElse("Scenario: " + toWords(nestedClass.getSimpleName(), CAPITALIZE_ALL));
     }
 
     @Override
     public String generateDisplayNameForMethod(final Class<?> testClass, final Method testMethod) {
         return desc(testMethod)
-                .orElse(prefix(testMethod) + uncapitalize(testMethod.getName()));
+                .orElse(prefix(testMethod) + toWords(testMethod.getName(), UN_CAPITALIZE_ALL));
     }
 
     private Optional<String> desc(final Class<?> nestedClass) {
