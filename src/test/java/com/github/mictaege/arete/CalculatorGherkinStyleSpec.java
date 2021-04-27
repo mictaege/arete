@@ -16,7 +16,7 @@ class CalculatorGherkinStyleSpec {
     }
 
     @Scenario()
-    class ShouldAddFiveToTen {
+    class Should_Add_5_To_10 {
         int a, b, c;
         @Given(1) void five() {
             a = 5;
@@ -35,7 +35,7 @@ class CalculatorGherkinStyleSpec {
         }
 
         @Then(2)
-        void notBeAnEqualNumber() {
+        void not_be_an_equal_number() {
             assertThat(c % 2, is(1));
         }
     }

@@ -146,7 +146,7 @@ If a specification consists of several consecutive Given-When-Then sequences, th
 
 ## Display Name Generation
 
-Per default Arete uses a display name generation strategy that expects class and method names written in camel case.
+Per default Arete uses a display name generation strategy that expects class and method names written in _camelCase_ or tokens separated by _under_scores_.
 
 Example:
 
@@ -156,10 +156,10 @@ class ShouldAddFiveToTen {
     @Given(1) void five() {...}
     @Given(2) void ten() {...}
 
-    @When void addingTogether() {...}
+    @When void adding_together() {...}
 
     @Then(1) void theResultShouldBeCorrect() {...}
-    @Then(2) void notBeAnEqualNumber() {...}
+    @Then(2) void not_be_an_equal_number() {...}
 }
 ```
 will result in
