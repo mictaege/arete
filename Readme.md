@@ -16,7 +16,7 @@ class CalculatorGherkinStyleSpec {
         calculator = new Calculator();
     }
 
-    @Scenario()
+    @Scenario
     class ShouldAddFiveToTen {
         int a, b, c;
 
@@ -42,7 +42,7 @@ A specification written in Gerkhin style contains one or more scenarios as neste
 ```Java
 class CalculatorDescriptiveStyleSpec {
 
-    @Describe()
+    @Describe
     class ACalculator {
         private Calculator calculator = new Calculator();
 
@@ -65,7 +65,7 @@ In descriptive style a _Description_ is always a new test instance (`@TestInstan
 ### Default order of Given-When-Then Sequences
 
 ```Java
-@Scenario()
+@Scenario
 class ShouldAddFiveToTen {
     int a, b, c;
 
@@ -88,7 +88,7 @@ In a simple _Scenario_ the Given-When-Then sequences are automatically ordered, 
 ### Ordering within a Sequence
 
 ```Java
-@Scenario()
+@Scenario
 class ShouldAddFiveToTen {
     int a, b, c;
     @Given(1) void five() {
@@ -116,7 +116,7 @@ When a _Given_, _When_ or _Then_ sequence consists of more than one step, the in
 ### Ordering across consecutive Sequences
 
 ```Java
-@Scenario()
+@Scenario
 class ShouldAddThreeToTheResultOfFiveAndTen {
     int a, b, c, d;
     @Given void fivAndTen() {
@@ -151,7 +151,7 @@ Per default Arete uses a display name generation strategy that expects class and
 Example:
 
 ```Java
-@Scenario()
+@Scenario
 class ShouldAddFiveToTen {    
     @Given(1) void five() {...}
     @Given(2) void ten() {...}
