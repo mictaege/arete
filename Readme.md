@@ -1,7 +1,7 @@
 # Arete
 
 [![Apache License 2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.mictaege/arete.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.github.mictaege%22%20AND%20a%3A%22arete%22)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.mictaege/arete.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.mictaege%22%20AND%20a:%22arete%22)
 
 Arete is a lightweight JUnit 5 extension for writing specifications and scenarios in a BDD testing style.
 
@@ -40,6 +40,8 @@ class CalculatorGherkinStyleSpec {
 ```
 A specification written in Gerkhin style contains one or more scenarios as nested classes. Each scenario defines several executable steps.
 
+See [source](/src/test/java/com/github/mictaege/arete/CalculatorGherkinStyleSpec.java) for a complete example.
+
 ### Descriptive style
 
 ```Java
@@ -56,6 +58,8 @@ class CalculatorDescriptiveStyleSpec {
 }
 ```
 A specification written in descriptive style contains one or more descriptions as nested classes. Each description defines several executable expectations.
+
+See [source](/src/test/java/com/github/mictaege/arete/CalculatorDescriptiveStyleSpec.java) for a complete example.
 
 ## Lifecycle and Scope
 

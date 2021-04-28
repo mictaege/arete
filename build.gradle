@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'com.github.mictaege'
-version '2021.2'
+version '2021.3'
 
 sourceCompatibility = 1.8
 

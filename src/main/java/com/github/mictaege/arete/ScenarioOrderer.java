@@ -1,9 +1,8 @@
 package com.github.mictaege.arete;
 
-import static com.github.mictaege.arete.ScenarioOrderer.StepOrderDef.stepOrderDef;
+import static com.github.mictaege.arete.SeqAndStepOrder.stepOrderDef;
 import static java.lang.Math.max;
 import static java.util.Comparator.comparing;
-import static java.util.Comparator.comparingInt;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -19,8 +18,8 @@ public class ScenarioOrderer implements MethodOrderer {
         context.getMethodDescriptors().sort(comparing(ScenarioOrderer::getOrder));
     }
 
-    private static StepOrderDef getOrder(MethodDescriptor descriptor) {
-        final AtomicReference<StepOrderDef> order = new AtomicReference<>(stepOrderDef(1, Order.DEFAULT));
+    private static SeqAndStepOrder getOrder(MethodDescriptor descriptor) {
+        final AtomicReference<SeqAndStepOrder> order = new AtomicReference<>(stepOrderDef(1, Order.DEFAULT));
         descriptor.findAnnotation(Given.class).ifPresent(g -> {
             order.set(stepOrderDef(g.seq(), max(g.value(), g.step())));
         });
@@ -30,38 +29,10 @@ public class ScenarioOrderer implements MethodOrderer {
         descriptor.findAnnotation(Then.class).ifPresent(t -> {
             order.set(stepOrderDef(t.seq(), max(t.value(), t.step()) + 1500));
         });
-        descriptor.findAnnotation(Order.class).ifPresent(t -> {
-            order.set(stepOrderDef(1, t.value()));
+        descriptor.findAnnotation(Order.class).ifPresent(o -> {
+            order.set(stepOrderDef(1, o.value()));
         });
         return order.get();
-    }
-
-    static class StepOrderDef implements Comparable<StepOrderDef> {
-        static StepOrderDef stepOrderDef(final int sequence, final int step) {
-            return new StepOrderDef(sequence, step);
-        }
-        private final int sequence;
-        private final int step;
-
-        StepOrderDef(final int sequence, final int step) {
-            this.sequence = sequence;
-            this.step = step;
-        }
-
-        int getSequence() {
-            return sequence;
-        }
-
-        int getStep() {
-            return step;
-        }
-
-        @Override
-        public int compareTo(final StepOrderDef o) {
-            return comparingInt(StepOrderDef::getSequence)
-                    .thenComparingInt(StepOrderDef::getStep)
-                    .compare(this, o);
-        }
     }
 
 }

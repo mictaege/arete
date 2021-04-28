@@ -18,11 +18,11 @@ public class DescribeOrderer implements MethodOrderer {
 
     private static int getOrder(MethodDescriptor descriptor) {
         final AtomicReference<Integer> order = new AtomicReference<>(Order.DEFAULT);
-        descriptor.findAnnotation(ItShould.class).ifPresent(g -> {
-            order.set(g.value());
+        descriptor.findAnnotation(ItShould.class).ifPresent(i -> {
+            order.set(i.value());
         });
-        descriptor.findAnnotation(Order.class).ifPresent(t -> {
-            order.set(t.value());
+        descriptor.findAnnotation(Order.class).ifPresent(o -> {
+            order.set(o.value());
         });
         return order.get();
     }
