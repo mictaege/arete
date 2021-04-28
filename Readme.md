@@ -48,8 +48,7 @@ See [source](/src/test/java/com/github/mictaege/arete/CalculatorGherkinStyleSpec
 ```Java
 class CalculatorDescriptiveStyleSpec {
 
-    @Describe
-    class ACalculator {
+    @Describe class ACalculator {
         private Calculator calculator = new Calculator();
 
         @ItShould void subtract5From10() {
