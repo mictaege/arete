@@ -3,7 +3,9 @@
 [![Apache License 2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.mictaege/arete.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.mictaege%22%20AND%20a:%22arete%22)
 
-Arete is a lightweight JUnit 5 extension for writing specifications and scenarios in a BDD testing style.
+Arete is a lightweight JUnit 5 extension that enables a BDD testing style by describing test cases as specifications and scenarios.
+
+![Test run](TestRun.png)
 
 ## Overview
 
@@ -19,8 +21,7 @@ class CalculatorGherkinStyleSpec {
         calculator = new Calculator();
     }
 
-    @Scenario
-    class ShouldAddFiveToTen {
+    @Scenario class ShouldAddFiveToTen {
         int a, b, c;
 
         @Given void fiveAndTen() {
@@ -42,13 +43,12 @@ A specification written in Gerkhin style contains one or more scenarios as neste
 
 See [source](/src/test/java/com/github/mictaege/arete/CalculatorGherkinStyleSpec.java) for a complete example.
 
-### Descriptive style
+### Descriptive Style
 
 ```Java
 class CalculatorDescriptiveStyleSpec {
 
-    @Describe
-    class ACalculator {
+    @Describe class ACalculator {
         private Calculator calculator = new Calculator();
 
         @ItShould void subtract5From10() {
@@ -63,17 +63,16 @@ See [source](/src/test/java/com/github/mictaege/arete/CalculatorDescriptiveStyle
 
 ## Lifecycle and Scope
 
-In Gerkhin style each _Scenario_ is a single test instance (`@TestInstance(PER_CLASS)`) and all steps are sharing the same test instance, and it's state. In this way, one step can access the results of another step. But this also means that the order in which the steps are being executed is important.
+In Gerkhin style each scenario is a single test instance (`@TestInstance(PER_CLASS)`), and all steps are sharing the same test instance and it's state. In this way, one step can access the results of another step. But this also means that the order in which the steps are being executed is important.
 
-In descriptive style a _Description_ is always a new test instance (`@TestInstance(PER_METHOD)`) and all expectations has there exclusive test instance. In this way, every expectation is independent and does not rely on the execution order. But this also means that, one expectation can not access the results of another expectation.
+In descriptive style a description is always a new test instance (`@TestInstance(PER_METHOD)`), and all expectations has there own exclusive test instance. In this way, every expectation is independent and does not rely on the execution order. But this also means that, one expectation can not access the results of another expectation.
 
 ## Execution Order in Gerkhin Style
 
-### Default order of Given-When-Then Sequences
+### Default Order of Given-When-Then Sequences
 
 ```Java
-@Scenario
-class ShouldAddFiveToTen {
+@Scenario class ShouldAddFiveToTen {
     int a, b, c;
 
     @Given void fiveAndTen() {
@@ -95,8 +94,7 @@ In a simple _Scenario_ the Given-When-Then sequences are automatically ordered, 
 ### Ordering within a Sequence
 
 ```Java
-@Scenario
-class ShouldAddFiveToTen {
+@Scenario class ShouldAddFiveToTen {
     int a, b, c;
     @Given(1) void five() {
         a = 5;
@@ -118,13 +116,12 @@ class ShouldAddFiveToTen {
     }
 }
 ```
-When a _Given_, _When_ or _Then_ sequence consists of more than one step, the inner ordering within the sequence has to be defined using the `value` or `step` attribute of the annotation.
+When a _Given_, _When_ or _Then_ sequence consists of more than one step, the inner ordering within the sequence has to be defined using the `step` attribute of the annotation, respectively it's short-form `value`.
 
-### Ordering across consecutive Sequences
+### Ordering across Consecutive Sequences
 
 ```Java
-@Scenario
-class ShouldAddThreeToTheResultOfFiveAndTen {
+@Scenario class ShouldAddThreeToTheResultOfFiveAndTen {
     int a, b, c, d;
     @Given void fivAndTen() {
         a = 5;
@@ -149,7 +146,7 @@ class ShouldAddThreeToTheResultOfFiveAndTen {
     }
 }
 ```
-If a specification consists of several consecutive Given-When-Then sequences, the sequence and/or the inner order within the sequence may has to be defined using the `seq` and/or `step` attribute.
+If a specification consists of several consecutive Given-When-Then sequences, the sequence and/or the inner order within the sequence could be defined using the `seq` and/or `step` attribute.
 
 ## Display Name Generation
 
@@ -158,8 +155,7 @@ Per default Arete uses a display name generation strategy that expects class and
 Example:
 
 ```Java
-@Scenario
-class ShouldAddFiveToTen {    
+@Scenario class ShouldAddFiveToTen {    
     @Given(1) void five() {...}
     @Given(2) void ten() {...}
 
@@ -187,3 +183,70 @@ class ShouldAddFiveToTen {
     ...
 }
 ```
+## Nesting and Grouping
+
+### Gherkin Style
+
+```Java
+class CalculatorSpec {
+    
+    @Feature class Addition {
+    
+        @Scenario class ShouldAddFiveToTen {
+            @Given void fiveAndTen() {...}
+
+            @When void addingTogether() {...}
+
+            @Then void theResultShouldBeCorrect() {...}
+        }
+    
+        @Scenario class ShouldAddFiveToTen {
+            @Given void minusFiveAndTen() {...}
+
+            @When void addingTogether() {...}
+
+            @Then void theResultShouldBeCorrect() {...}
+        }
+        
+    }
+    
+    @Feature class Subtraction {
+        
+        @Scenario class ShouldSubtractTwoNumbers {
+            @Given void fiveAndTen() {...}
+
+            @When void subtractingFromEachOther() {...}
+
+            @Then void theResultShouldBeCorrect() {...}
+        }
+    }
+}
+```
+In Gherkin style scenarios related to a common functionality can be grouped into different nested features using the `@Feature` annotation.
+
+### Descriptive Style
+
+```Java
+class CalculatorSpec {
+
+    @Describe() class ACalculator {
+        
+        @Describe() class Subtraction {
+            
+            @ItShould void subtract5From10() {...}
+
+            @ItShould void subtractTwoNumbers() {...}
+            
+        }
+
+        @Describe() class Addition {
+            
+            @ItShould void addTwoNumbers() {...}
+
+            @ItShould void addThreeNumbers() {...}
+            
+        }
+    }
+}
+```
+In descriptive style expectations related to a common functionality can be grouped into different nested descriptions.
