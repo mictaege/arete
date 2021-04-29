@@ -11,66 +11,62 @@ import static org.hamcrest.Matchers.is;
 
 class NamingToolsSpec {
 
-    @Describe class TheNamingTools {
+    @Describe class CamelCaseHandling {
 
-        @Describe class CamelCaseHandling {
-
-            @ItShould void splitMultiTokenStrings() {
-                assertThat(toWords("camelCase", SPLIT_BY_CAMELCASE, LEAVE_AS_IS), is("camel Case"));
-            }
-
-            @ItShould void splitSingleTokenStrings() {
-                assertThat(toWords("camel", SPLIT_BY_CAMELCASE, LEAVE_AS_IS), is("camel"));
-            }
-
-            @ItShould void splitAndCapitalize() {
-                assertThat(toWords("camelCase", SPLIT_BY_CAMELCASE, CAPITALIZE_ALL), is("Camel Case"));
-            }
-
-            @ItShould void splitAndUncapitalize() {
-                assertThat(toWords("camelCase", SPLIT_BY_CAMELCASE, UN_CAPITALIZE_ALL), is("camel case"));
-            }
-
-            @ItShould void notSplitAcronyms() {
-                assertThat(toWords("camelCASE", SPLIT_BY_CAMELCASE, CAPITALIZE_ALL), is("Camel CASE"));
-            }
-
+        @ItShould void splitMultiTokenStrings() {
+            assertThat(toWords("camelCase", SPLIT_BY_CAMELCASE, LEAVE_AS_IS), is("camel Case"));
+        }
+        
+        @ItShould void splitSingleTokenStrings() {
+            assertThat(toWords("camel", SPLIT_BY_CAMELCASE, LEAVE_AS_IS), is("camel"));
+        }
+        
+        @ItShould void splitAndCapitalize() {
+            assertThat(toWords("camelCase", SPLIT_BY_CAMELCASE, CAPITALIZE_ALL), is("Camel Case"));
+        }
+        
+        @ItShould void splitAndUncapitalize() {
+            assertThat(toWords("camelCase", SPLIT_BY_CAMELCASE, UN_CAPITALIZE_ALL), is("camel case"));
+        }
+        
+        @ItShould void notSplitAcronyms() {
+            assertThat(toWords("camelCASE", SPLIT_BY_CAMELCASE, CAPITALIZE_ALL), is("Camel CASE"));
         }
 
-        @Describe class UnderscoreHandling {
+    }
 
-            @ItShould void splitMultiTokenStrings() {
-                assertThat(toWords("camel_case", SPLIT_BY_UNDERSCORE, LEAVE_AS_IS), is("camel case"));
-            }
+    @Describe class UnderscoreHandling {
+        
+        @ItShould void splitMultiTokenStrings() {
+            assertThat(toWords("camel_case", SPLIT_BY_UNDERSCORE, LEAVE_AS_IS), is("camel case"));
+        }
+        
+        @ItShould void splitSingleTokenStrings() {
+            assertThat(toWords("camel", SPLIT_BY_UNDERSCORE, LEAVE_AS_IS), is("camel"));
+        }
+        
+        @ItShould void splitAndCapitalize() {
+            assertThat(toWords("camel_Case", SPLIT_BY_UNDERSCORE, CAPITALIZE_ALL), is("Camel Case"));
+        }
+        
+        @ItShould void splitAndUncapitalize() {
+            assertThat(toWords("camel_Case", SPLIT_BY_UNDERSCORE, UN_CAPITALIZE_ALL), is("camel case"));
+        }
+        
+        @ItShould void notSplitAcronyms() {
+            assertThat(toWords("camel_CASE", SPLIT_BY_UNDERSCORE, CAPITALIZE_ALL), is("Camel CASE"));
+        }
+        
+    }
 
-            @ItShould void splitSingleTokenStrings() {
-                assertThat(toWords("camel", SPLIT_BY_UNDERSCORE, LEAVE_AS_IS), is("camel"));
-            }
+    @Describe class StyleDetection {
 
-            @ItShould void splitAndCapitalize() {
-                assertThat(toWords("camel_Case", SPLIT_BY_UNDERSCORE, CAPITALIZE_ALL), is("Camel Case"));
-            }
-
-            @ItShould void splitAndUncapitalize() {
-                assertThat(toWords("camel_Case", SPLIT_BY_UNDERSCORE, UN_CAPITALIZE_ALL), is("camel case"));
-            }
-
-            @ItShould void notSplitAcronyms() {
-                assertThat(toWords("camel_CASE", SPLIT_BY_UNDERSCORE, CAPITALIZE_ALL), is("Camel CASE"));
-            }
-
+        @ItShould void detectUnderscoreStyle() {
+            assertThat(toWords("camel_case", LEAVE_AS_IS), is("camel case"));
         }
 
-        @Describe class StyleDetection {
-
-            @ItShould void detectUnderscoreStyle() {
-                assertThat(toWords("camel_case", LEAVE_AS_IS), is("camel case"));
-            }
-
-            @ItShould void detectCamelCaseStyle() {
-                assertThat(toWords("camelCase", LEAVE_AS_IS), is("camel Case"));
-            }
-
+        @ItShould void detectCamelCaseStyle() {
+            assertThat(toWords("camelCase", LEAVE_AS_IS), is("camel Case"));
         }
 
     }

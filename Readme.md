@@ -41,7 +41,7 @@ class CalculatorGherkinStyleSpec {
 ```
 A specification written in Gerkhin style contains one or more scenarios as nested classes. Each scenario defines several executable steps.
 
-See [Tests](/src/test/java/com/github/mictaege/arete) for more examples.
+See [arete tests](/src/test/java/com/github/mictaege/arete) for more examples.
 
 ### Descriptive Style
 
@@ -59,7 +59,7 @@ class CalculatorDescriptiveStyleSpec {
 ```
 A specification written in descriptive style contains one or more descriptions as nested classes. Each description defines several executable expectations.
 
-See [Tests](/src/test/java/com/github/mictaege/arete) for more examples.
+See [arete tests](/src/test/java/com/github/mictaege/arete) for more examples.
 
 ## Lifecycle and Scope
 
