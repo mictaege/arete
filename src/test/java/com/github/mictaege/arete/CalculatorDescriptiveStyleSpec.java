@@ -8,7 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 
 class CalculatorDescriptiveStyleSpec {
 
-    @Describe() class ACalculator {
+    @Describe(desc = "A Calculator Instance") class ACalculator {
         private Calculator calculator;
 
         @BeforeEach
@@ -16,7 +16,7 @@ class CalculatorDescriptiveStyleSpec {
             calculator = new Calculator();
         }
 
-        @Describe() class Subtraction {
+        @Describe class Subtraction {
             @ItShould void subtract5From10() {
                 assertThat(calculator.subtract(10, 5), is(5));
             }
@@ -26,7 +26,7 @@ class CalculatorDescriptiveStyleSpec {
             }
         }
 
-        @Describe() class Addition {
+        @Describe class Addition {
             @ItShould(desc = "It should add 5 to 10") void addTwoNumbers() {
                 assertThat(calculator.add(5, 10), is(15));
             }
@@ -36,7 +36,7 @@ class CalculatorDescriptiveStyleSpec {
             }
         }
 
-        @Describe() class Division {
+        @Describe class Division {
             @ItShould void divideTwoNumbers() {
                 assertThat(calculator.divide(6, 3), is(2.0));
             }

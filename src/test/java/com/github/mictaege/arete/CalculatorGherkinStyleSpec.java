@@ -108,7 +108,7 @@ class CalculatorGherkinStyleSpec {
 
     }
 
-    @Feature
+    @Feature(desc = "Feature: Subtracting numbers")
     class Subtracting {
         @Scenario(desc = "Scenario: Should subtract two numbers leading to a negative result")
         class ShouldSubtractTwoNumbers {
