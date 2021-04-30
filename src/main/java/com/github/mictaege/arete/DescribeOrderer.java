@@ -12,11 +12,11 @@ import org.junit.jupiter.api.Order;
 public class DescribeOrderer implements MethodOrderer {
 
     @Override
-    public void orderMethods(MethodOrdererContext context) {
+    public void orderMethods(final MethodOrdererContext context) {
         context.getMethodDescriptors().sort(comparingInt(DescribeOrderer::getOrder));
     }
 
-    private static int getOrder(MethodDescriptor descriptor) {
+    private static int getOrder(final MethodDescriptor descriptor) {
         final AtomicReference<Integer> order = new AtomicReference<>(Order.DEFAULT);
         descriptor.findAnnotation(ItShould.class).ifPresent(i -> {
             order.set(i.value());

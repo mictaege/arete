@@ -14,11 +14,11 @@ import org.junit.jupiter.api.Order;
 public class ScenarioOrderer implements MethodOrderer {
 
     @Override
-    public void orderMethods(MethodOrdererContext context) {
+    public void orderMethods(final MethodOrdererContext context) {
         context.getMethodDescriptors().sort(comparing(ScenarioOrderer::getOrder));
     }
 
-    private static SeqAndStepPriority getOrder(MethodDescriptor descriptor) {
+    private static SeqAndStepPriority getOrder(final MethodDescriptor descriptor) {
         final AtomicReference<SeqAndStepPriority> order = new AtomicReference<>(priority(1, 1, Order.DEFAULT));
         descriptor.findAnnotation(Given.class).ifPresent(g -> {
             order.set(priority(g.seq(), 1, max(g.value(), g.step())));
