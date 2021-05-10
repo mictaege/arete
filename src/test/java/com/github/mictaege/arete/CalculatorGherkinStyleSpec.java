@@ -6,7 +6,7 @@ import static org.hamcrest.Matchers.lessThan;
 
 import org.junit.jupiter.api.BeforeEach;
 
-class CalculatorGherkinStyleSpec {
+@Spec class CalculatorGherkinStyleSpec {
 
     private Calculator calculator;
 
@@ -108,7 +108,7 @@ class CalculatorGherkinStyleSpec {
 
     }
 
-    @Feature
+    @Feature(desc = "Feature: Subtracting numbers")
     class Subtracting {
         @Scenario(desc = "Scenario: Should subtract two numbers leading to a negative result")
         class ShouldSubtractTwoNumbers {

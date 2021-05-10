@@ -1,7 +1,9 @@
 # Arete
 
-[![Apache License 2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
+
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.mictaege/arete.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.mictaege%22%20AND%20a:%22arete%22)
+[![Maven Central](https://img.shields.io/maven-central/v/org.junit.jupiter/junit-jupiter/5.7.0.svg?color=25a162&label=Jupiter)](https://search.maven.org/search?q=g:org.junit.jupiter%20AND%20v:5.7.0)
+[![Apache License 2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 
 Arete is a lightweight JUnit 5 extension that enables a BDD testing style by describing test cases as specifications and scenarios.
 
@@ -12,7 +14,7 @@ Arete is a lightweight JUnit 5 extension that enables a BDD testing style by des
 ### Gerkhin style
 
 ```Java
-class CalculatorGherkinStyleSpec {
+@Spec class CalculatorGherkinStyleSpec {
 
     private Calculator calculator;
 
@@ -41,12 +43,12 @@ class CalculatorGherkinStyleSpec {
 ```
 A specification written in Gerkhin style contains one or more scenarios as nested classes. Each scenario defines several executable steps.
 
-See [source](/src/test/java/com/github/mictaege/arete/CalculatorGherkinStyleSpec.java) for a complete example.
+See [arete tests](/src/test/java/com/github/mictaege/arete) for more examples.
 
 ### Descriptive Style
 
 ```Java
-class CalculatorDescriptiveStyleSpec {
+@Spec class CalculatorDescriptiveStyleSpec {
 
     @Describe class ACalculator {
         private Calculator calculator = new Calculator();
@@ -59,7 +61,7 @@ class CalculatorDescriptiveStyleSpec {
 ```
 A specification written in descriptive style contains one or more descriptions as nested classes. Each description defines several executable expectations.
 
-See [source](/src/test/java/com/github/mictaege/arete/CalculatorDescriptiveStyleSpec.java) for a complete example.
+See [arete tests](/src/test/java/com/github/mictaege/arete) for more examples.
 
 ## Lifecycle and Scope
 
@@ -188,7 +190,7 @@ class ShouldAddFiveToTen {
 ### Gherkin Style
 
 ```Java
-class CalculatorSpec {
+@Spec class CalculatorSpec {
     
     @Feature class Addition {
     
@@ -227,7 +229,7 @@ In Gherkin style scenarios related to a common functionality can be grouped into
 ### Descriptive Style
 
 ```Java
-class CalculatorSpec {
+@Spec class CalculatorSpec {
 
     @Describe() class ACalculator {
         

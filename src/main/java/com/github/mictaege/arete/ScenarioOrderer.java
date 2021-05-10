@@ -1,6 +1,6 @@
 package com.github.mictaege.arete;
 
-import static com.github.mictaege.arete.SeqAndStepOrder.stepOrderDef;
+import static com.github.mictaege.arete.SeqAndStepPriority.priority;
 import static java.lang.Math.max;
 import static java.util.Comparator.comparing;
 
@@ -14,23 +14,23 @@ import org.junit.jupiter.api.Order;
 public class ScenarioOrderer implements MethodOrderer {
 
     @Override
-    public void orderMethods(MethodOrdererContext context) {
+    public void orderMethods(final MethodOrdererContext context) {
         context.getMethodDescriptors().sort(comparing(ScenarioOrderer::getOrder));
     }
 
-    private static SeqAndStepOrder getOrder(MethodDescriptor descriptor) {
-        final AtomicReference<SeqAndStepOrder> order = new AtomicReference<>(stepOrderDef(1, Order.DEFAULT));
+    private static SeqAndStepPriority getOrder(final MethodDescriptor descriptor) {
+        final AtomicReference<SeqAndStepPriority> order = new AtomicReference<>(priority(1, 1, Order.DEFAULT));
         descriptor.findAnnotation(Given.class).ifPresent(g -> {
-            order.set(stepOrderDef(g.seq(), max(g.value(), g.step())));
+            order.set(priority(g.seq(), 1, max(g.value(), g.step())));
         });
         descriptor.findAnnotation(When.class).ifPresent(w -> {
-            order.set(stepOrderDef(w.seq(), max(w.value(), w.step()) + 1000));
+            order.set(priority(w.seq(), 2, max(w.value(), w.step())));
         });
         descriptor.findAnnotation(Then.class).ifPresent(t -> {
-            order.set(stepOrderDef(t.seq(), max(t.value(), t.step()) + 1500));
+            order.set(priority(t.seq(), 3, max(t.value(), t.step())));
         });
         descriptor.findAnnotation(Order.class).ifPresent(o -> {
-            order.set(stepOrderDef(1, o.value()));
+            order.set(priority(1, 1, o.value()));
         });
         return order.get();
     }
