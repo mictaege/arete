@@ -6,7 +6,7 @@ import static org.hamcrest.Matchers.lessThan;
 
 import org.junit.jupiter.api.BeforeEach;
 
-class CalculatorGherkinStyleSpec {
+@Spec class CalculatorGherkinStyleSpec {
 
     private Calculator calculator;
 

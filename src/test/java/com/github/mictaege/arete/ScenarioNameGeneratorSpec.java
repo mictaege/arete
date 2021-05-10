@@ -7,7 +7,7 @@ import com.github.mictaege.arete.CalculatorGherkinStyleSpec.Addition.ShouldAddTw
 import com.github.mictaege.arete.CalculatorGherkinStyleSpec.Addition.Should_Add_5_To_10;
 import com.github.mictaege.arete.CalculatorGherkinStyleSpec.Subtracting.ShouldSubtractTwoNumbers;
 
-class ScenarioNameGeneratorSpec {
+@Spec class ScenarioNameGeneratorSpec {
 
     ScenarioNameGenerator generator = new ScenarioNameGenerator();
 

@@ -12,7 +12,7 @@ import org.junit.jupiter.api.MethodOrdererContext;
 import org.junit.jupiter.api.Order;
 import org.mockito.Mock;
 
-class DescribeOrdererSpec {
+@Spec class DescribeOrdererSpec {
 
     DescribeOrderer orderer = new DescribeOrderer();
 

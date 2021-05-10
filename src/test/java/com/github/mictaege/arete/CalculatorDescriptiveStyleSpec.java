@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.BeforeEach;
 
-class CalculatorDescriptiveStyleSpec {
+@Spec class CalculatorDescriptiveStyleSpec {
 
     @Describe(desc = "A Calculator Instance") class ACalculator {
         private Calculator calculator;

@@ -14,7 +14,7 @@ Arete is a lightweight JUnit 5 extension that enables a BDD testing style by des
 ### Gerkhin style
 
 ```Java
-class CalculatorGherkinStyleSpec {
+@Spec class CalculatorGherkinStyleSpec {
 
     private Calculator calculator;
 
@@ -48,7 +48,7 @@ See [arete tests](/src/test/java/com/github/mictaege/arete) for more examples.
 ### Descriptive Style
 
 ```Java
-class CalculatorDescriptiveStyleSpec {
+@Spec class CalculatorDescriptiveStyleSpec {
 
     @Describe class ACalculator {
         private Calculator calculator = new Calculator();
@@ -190,7 +190,7 @@ class ShouldAddFiveToTen {
 ### Gherkin Style
 
 ```Java
-class CalculatorSpec {
+@Spec class CalculatorSpec {
     
     @Feature class Addition {
     
@@ -229,7 +229,7 @@ In Gherkin style scenarios related to a common functionality can be grouped into
 ### Descriptive Style
 
 ```Java
-class CalculatorSpec {
+@Spec class CalculatorSpec {
 
     @Describe() class ACalculator {
         

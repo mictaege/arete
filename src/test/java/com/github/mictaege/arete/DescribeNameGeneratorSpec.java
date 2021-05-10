@@ -7,7 +7,7 @@ import com.github.mictaege.arete.CalculatorDescriptiveStyleSpec.ACalculator;
 import com.github.mictaege.arete.CalculatorDescriptiveStyleSpec.ACalculator.Addition;
 import com.github.mictaege.arete.CalculatorDescriptiveStyleSpec.ACalculator.Subtraction;
 
-class DescribeNameGeneratorSpec {
+@Spec class DescribeNameGeneratorSpec {
 
     DescribeNameGenerator generator = new DescribeNameGenerator();
 

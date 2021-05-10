@@ -6,7 +6,7 @@ import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.lessThan;
 
-class SeqAndStepPrioritySpec {
+@Spec class SeqAndStepPrioritySpec {
 
     @Feature class OrderWithinTheSameLevel {
 

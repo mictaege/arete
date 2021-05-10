@@ -7,7 +7,7 @@ import com.github.mictaege.arete.CalculatorGherkinStyleSpec.Addition;
 import com.github.mictaege.arete.CalculatorGherkinStyleSpec.Addition.ShouldAddTwoNumbers;
 import com.github.mictaege.arete.CalculatorGherkinStyleSpec.Subtracting;
 
-class FeatureNameGeneratorSpec {
+@Spec class FeatureNameGeneratorSpec {
 
     FeatureNameGenerator generator = new FeatureNameGenerator();
 

@@ -9,7 +9,7 @@ import static com.github.mictaege.arete.NamingTools.toWords;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-class NamingToolsSpec {
+@Spec class NamingToolsSpec {
 
     @Describe class CamelCaseHandling {
 
