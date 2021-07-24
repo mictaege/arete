@@ -27,7 +27,9 @@ public interface ScreenshotTaker extends Normalizer<ExtensionContext, String> {
         return new UniqueIdToHashNormalizer().normalize(extensionContext.getUniqueId());
     }
 
-    String getFileExtension();
+    default String getFileExtension() {
+        return "png";
+    }
 
     default File getScreenshotsDir() {
         final File tmpDir = new File(new File(System.getProperty("java.io.tmpdir")), "arete_screenshots");

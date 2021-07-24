@@ -18,11 +18,6 @@ class DummyScreenshotTaker implements ScreenshotTaker {
     }
 
     @Override
-    public String getFileExtension() {
-        return "png";
-    }
-
-    @Override
     public String normalize(final ExtensionContext context) {
         return context.getParent().map(p -> p.getTestClass().map(Class::getName).map(n -> n.replace(".", "_")).orElse("")).orElse("") + "_"
                 + context.getDisplayName().replace(" ", "_");
