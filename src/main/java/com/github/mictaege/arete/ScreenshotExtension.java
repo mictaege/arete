@@ -2,33 +2,21 @@ package com.github.mictaege.arete;
 
 import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
-import static java.util.stream.Collectors.toSet;
 
-import java.util.Arrays;
 import java.util.Optional;
-import java.util.Set;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestWatcher;
 
+import com.github.mictaege.arete.ScreenshotTaker.TestResult;
 import com.google.common.io.Files;
 
 public class ScreenshotExtension implements TestWatcher {
 
-    public enum TestResult {
-        DISABLED, SUCCESS, ABORTION, FAILURE
-    }
-
     private final ScreenshotTaker screenshotTaker;
-    private final Set<TestResult> resultsFilter;
 
     public ScreenshotExtension(final ScreenshotTaker screenshotTaker) {
-        this(screenshotTaker, TestResult.FAILURE);
-    }
-
-    public ScreenshotExtension(final ScreenshotTaker screenshotTaker, final TestResult... filterResults) {
         this.screenshotTaker = screenshotTaker;
-        this.resultsFilter = Arrays.stream(filterResults).collect(toSet());
     }
 
     @Override
@@ -52,7 +40,7 @@ public class ScreenshotExtension implements TestWatcher {
     }
 
     private void takeScreenshot(final ExtensionContext context, final TestResult result) {
-        if (resultsFilter.contains(result)) {
+        if (screenshotTaker.takeWhen().contains(result)) {
             ofNullable(screenshotTaker).ifPresent(t -> {
                 of(t)
                         .map(ScreenshotTaker::getImageBytes)

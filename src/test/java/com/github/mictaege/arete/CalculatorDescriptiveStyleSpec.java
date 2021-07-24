@@ -1,7 +1,5 @@
 package com.github.mictaege.arete;
 
-import static com.github.mictaege.arete.ScreenshotExtension.TestResult.FAILURE;
-import static com.github.mictaege.arete.ScreenshotExtension.TestResult.SUCCESS;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -12,7 +10,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 @Spec class CalculatorDescriptiveStyleSpec {
 
     @RegisterExtension
-    public ScreenshotExtension screenshots = new ScreenshotExtension(new DummyScreenshotTaker(), SUCCESS, FAILURE);
+    public ScreenshotExtension screenshots = new ScreenshotExtension(new DummyScreenshotTaker());
 
     @Describe(desc = "A Calculator Instance") class ACalculator {
         private Calculator calculator;

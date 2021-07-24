@@ -1,7 +1,5 @@
 package com.github.mictaege.arete;
 
-import static com.github.mictaege.arete.ScreenshotExtension.TestResult.FAILURE;
-import static com.github.mictaege.arete.ScreenshotExtension.TestResult.SUCCESS;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.lessThan;
@@ -12,7 +10,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 @Spec class CalculatorGherkinStyleSpec {
 
     @RegisterExtension
-    public ScreenshotExtension screenshots = new ScreenshotExtension(new DummyScreenshotTaker(), SUCCESS, FAILURE);
+    public ScreenshotExtension screenshots = new ScreenshotExtension(new DummyScreenshotTaker());
 
     private Calculator calculator;
 
