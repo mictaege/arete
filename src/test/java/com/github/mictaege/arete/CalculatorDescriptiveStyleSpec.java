@@ -5,8 +5,12 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 @Spec class CalculatorDescriptiveStyleSpec {
+
+    @RegisterExtension
+    public ScreenshotExtension screenshots = new ScreenshotExtension(new DummyScreenshotTaker());
 
     @Describe(desc = "A Calculator Instance") class ACalculator {
         private Calculator calculator;
