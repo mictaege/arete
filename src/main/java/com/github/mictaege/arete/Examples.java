@@ -16,9 +16,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @TestTemplate
 public @interface Examples {
 
+    String desc() default "";
+
     String pattern();
 
     Class<? extends ExampleSource> srcClass() default ExampleSource.class;
+
     String srcMethod() default "";
 
     int order() default 2;

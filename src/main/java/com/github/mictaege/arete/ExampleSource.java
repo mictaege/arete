@@ -21,7 +21,7 @@ public abstract class ExampleSource {
     protected abstract void build();
 
     public final void example(final ExampleParam<?>... params) {
-        examples.add(new ExampleParams("- [{0}]", params));
+        examples.add(new ExampleParams("{0})", params));
     }
 
     public final void example(final String prefixPattern, final ExampleParam<?>... params) {
