@@ -21,6 +21,9 @@ public class DescribeOrderer implements MethodOrderer {
         descriptor.findAnnotation(ItShould.class).ifPresent(i -> {
             order.set(i.value());
         });
+        descriptor.findAnnotation(Examples.class).ifPresent(i -> {
+            order.set(i.order());
+        });
         descriptor.findAnnotation(Order.class).ifPresent(o -> {
             order.set(o.value());
         });
