@@ -95,7 +95,7 @@ import com.google.common.base.Joiner;
 
             class DivideTwoNumbers extends ExampleSource {
                 @Override
-                protected void build() {
+                protected void init() {
                     example(given(9), given(3), then(3.0));
                     example(given(9), given(-3), then(-3.0));
                     example(given(-9), given(3), then(-3.0));

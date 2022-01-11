@@ -168,7 +168,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
             class ShouldAddTwoNumbers extends ExampleSource{
                 @Override
-                protected void build() {
+                protected void init() {
                     example(given(3), given(4), then(-1));
                     example(given(-3), given(4), then(-7));
                     example(given(-3), given(-4), then(1));

@@ -1,6 +1,5 @@
 package com.github.mictaege.arete;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -11,14 +10,14 @@ public abstract class ExampleSource {
 
     protected ExampleSource() {
         examples = new ArrayList<>();
-        build();
+        init();
     }
 
     public final List<ExampleParams> getExamples() {
         return examples;
     }
 
-    protected abstract void build();
+    protected abstract void init();
 
     public final void example(final ExampleParam<?>... params) {
         examples.add(new ExampleParams("{0})", params));
