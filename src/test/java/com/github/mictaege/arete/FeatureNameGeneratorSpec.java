@@ -34,10 +34,10 @@ import com.github.mictaege.arete.CalculatorGherkinStyleSpec.Subtracting;
 
     @Describe class DisplayNameGenerationForMethod {
 
-        @ItShould void takeSimpleMethodNameAsDefault() throws NoSuchMethodException {
+        @ItShould void deriveDisplayFromMethodName() throws NoSuchMethodException {
             final Class<ShouldAddTwoNumbers> clazz = ShouldAddTwoNumbers.class;
             final String displayName = generator.generateDisplayNameForMethod(clazz, clazz.getDeclaredMethod("theResultShouldBeCorrect"));
-            assertThat(displayName, is("theResultShouldBeCorrect"));
+            assertThat(displayName, is("the result should be correct"));
         }
     }
 

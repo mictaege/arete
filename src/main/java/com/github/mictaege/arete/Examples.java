@@ -6,6 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -16,6 +17,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @TestTemplate
 public @interface Examples {
 
+    int order() default Order.DEFAULT;
+
     String desc() default "";
 
     String pattern();
@@ -23,7 +26,5 @@ public @interface Examples {
     Class<? extends ExampleSource> srcClass() default ExampleSource.class;
 
     String srcMethod() default "";
-
-    int order() default 2;
 
 }
