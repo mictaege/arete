@@ -30,12 +30,12 @@ import com.google.common.base.Joiner;
                 subtractTwoNumbers(5, 10, -5);
             }
 
-            @Examples(pattern = "{0} - {1} => {2}", srcMethod = "subtractTwoNumbers")
+            @Examples(pattern = "{0} - {1} => {2}", srcMethod = "subtractTwoNumbersExamples")
             void subtractTwoNumbers(final int a, final int b, final int expected) {
                 assertThat(calculator.subtract(a, b), is(expected));
             }
 
-            void subtractTwoNumbers(final ExampleSource s) {
+            void subtractTwoNumbersExamples(final ExampleSource s) {
                 s.example(s.given(10),  s.given(3), s.then(7));
                 s.example(s.given(10),  s.given(10), s.then(0));
                 s.example(s.given(10),  s.given(17), s.then(-7));
@@ -60,12 +60,12 @@ import com.google.common.base.Joiner;
                 addSomeNumbers(13, 5, 7, 3, -2);
             }
 
-            @Examples(pattern = "{1} => {0}", srcMethod = "addSomeNumbers")
+            @Examples(pattern = "{1} => {0}", srcMethod = "addSomeNumbersExamples")
             void addSomeNumbers(final int exp, final Integer... numbers) {
                 assertThat(calculator.add(numbers), is(exp));
             }
 
-            void addSomeNumbers(final ExampleSource s) {
+            void addSomeNumbersExamples(final ExampleSource s) {
                 final Function<Integer[], String> toStr = (n) -> Joiner.on(" + ").join(n);
                 s.example("{0}. Adding only positive numbers:",
                         s.expect(34),  s.when(new Integer[]{3, 7, 4, 9, 11}, toStr));
@@ -88,12 +88,12 @@ import com.google.common.base.Joiner;
                 });
             }
 
-            @Examples(pattern = "{0} : {1} => {2}", srcClass = DivideTwoNumbers.class)
+            @Examples(pattern = "{0} : {1} => {2}", srcClass = DivideTwoNumbersExamples.class)
             void divideTwoNumbers(final int a, final int b, final double expected) {
                 assertThat(calculator.divide(a, b), is(expected));
             }
 
-            class DivideTwoNumbers extends ExampleSource {
+            class DivideTwoNumbersExamples extends ExampleSource {
                 @Override
                 protected void init() {
                     example(given(9), given(3), then(3.0));

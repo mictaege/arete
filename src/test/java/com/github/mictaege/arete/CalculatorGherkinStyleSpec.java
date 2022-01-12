@@ -77,12 +77,12 @@ import org.junit.jupiter.api.extension.RegisterExtension;
                 assertThat(d % 2, is(0));
             }
 
-            @Examples(pattern = "{0} + {1} => {2}", srcMethod = "shouldAddTwoNumbers")
+            @Examples(pattern = "{0} + {1} => {2}", srcMethod = "shouldAddTwoNumbersExamples")
             void shouldAddTwoNumbers(final int a, final int b, final int expected) {
                 assertThat(calculator.add(a, b), is(expected));
             }
 
-            void shouldAddTwoNumbers(final ExampleSource s) {
+            void shouldAddTwoNumbersExamples(final ExampleSource s) {
                 s.example(s.given(3), s.given(4), s.then(7));
                 s.example(s.given(-3), s.given(4), s.then(1));
                 s.example(s.given(-3), s.given(-4), s.then(-7));
@@ -120,12 +120,12 @@ import org.junit.jupiter.api.extension.RegisterExtension;
                 assertThat(d % 2, is(1));
             }
 
-            @Examples(pattern = "{0} + {1} + {2} => {3}", srcMethod = "shouldAddThreeNumbers")
+            @Examples(pattern = "{0} + {1} + {2} => {3}", srcMethod = "shouldAddThreeNumbersExamples")
             void shouldAddThreeNumbers(final int a, final int b, final int c, final int expected) {
                 assertThat(calculator.add(a, b, c), is(expected));
             }
 
-            void shouldAddThreeNumbers(final ExampleSource s) {
+            void shouldAddThreeNumbersExamples(final ExampleSource s) {
                 s.example("{0}. Adding only positive numbers:",
                         s.given(3), s.given(4), s.given(5), s.then(12));
                 s.example("{0}. Adding positive and negative numbers:",
@@ -161,12 +161,12 @@ import org.junit.jupiter.api.extension.RegisterExtension;
                 assertThat(c, is(-5));
             }
 
-            @Examples(pattern = "{0} - {1} => {2}", srcClass = ShouldAddTwoNumbers.class)
-            void shouldAddTwoNumbers(final int a, final int b, final int expected) {
+            @Examples(pattern = "{0} - {1} => {2}", srcClass = SubtractTwoNumbersExamples.class)
+            void subtractTwoNumbers(final int a, final int b, final int expected) {
                 assertThat(calculator.subtract(a, b), is(expected));
             }
 
-            class ShouldAddTwoNumbers extends ExampleSource{
+            class SubtractTwoNumbersExamples extends ExampleSource{
                 @Override
                 protected void init() {
                     example(given(3), given(4), then(-1));

@@ -9,6 +9,8 @@ Arete is a lightweight JUnit 5 extension that enables a BDD testing style by des
 
 ![Test run](TestRun.png)
 
+See [arete-gradle](http://github.com/mictaege/arete-gradle) for the Arete Gradle reporting plugin.
+
 ## Overview
 
 ### Gerkhin style
@@ -255,7 +257,7 @@ In descriptive style expectations related to a common functionality can be group
 
 ## Examples
 
-Since it is often helpful to illustrate a functionality with examples, such examples can be defined with arete.
+Since it is often very helpful to illustrate a functionality with examples, such examples can be defined with Arete.
 
 Scenario extended with examples:
 
@@ -266,12 +268,12 @@ Scenario extended with examples:
     @When void addingTogether() {...}
     @Then void theResultShouldFifteen) {...}
     
-    @Examples(pattern = "{0} + {1} => {2}", srcMethod = "shouldAddTwoNumbers")
-    void shouldAddTwoNumbers(final int a, final int b, final int expected) {
+    @Examples(pattern = "{0} + {1} => {2}", srcMethod = "addingTwoNumbersExamples")
+    void addingTwoNumbers(final int a, final int b, final int expected) {
         assertThat(calculator.add(a, b), is(expected));
     }
 
-    void shouldAddTwoNumbers(final ExampleSource s) {
+    void addingTwoNumbersExamples(final ExampleSource s) {
         s.example(s.given(3), s.given(4), s.then(7));
         s.example(s.given(-3), s.given(4), s.then(1));
         s.example(s.given(-3), s.given(-4), s.then(-7));
@@ -287,12 +289,12 @@ Description extended with examples:
 
     @ItShould void notDivideByZero() {...}
 
-    @Examples(pattern = "{0} : {1} => {2}", srcClass = DivideTwoNumbers.class)
+    @Examples(pattern = "{0} : {1} => {2}", srcClass = DivideTwoNumbersExamples.class)
     void divideTwoNumbers(final int a, final int b, final double expected) {
         assertThat(calculator.divide(a, b), is(expected));
     }
 
-    class DivideTwoNumbers extends ExampleSource {
+    class DivideTwoNumbersExamples extends ExampleSource {
         @Override
         protected void init() {
             example(given(9), given(3), then(3.0));
@@ -307,25 +309,24 @@ Description extended with examples:
 
 Examples are defined with a test method that is annotated with `@Examples`. This method takes several parameters that are used to implement the test. 
 
-In order to call the test with different parameters, a source for the examples must be given. The source can be a local method (`srcMethod = "shouldAddTwoNumbers"`) or a class (`srcClass = DivideTwoNumbers.class`). In case of a source method, the method must have a single parameter of type `ExampleSource`; in case of a source class, the class must be derived from `ExampleSource` and must have a default constructor. The values of each example are set with the builder methods of the `ExampleSource`, whereby the order and the types must match the parameters of the test method.
+In order to call the test with different parameters, a source for the examples must be given. The source can either be a local method (`srcMethod = "addingTwoNumbersExamples"`) or a class (`srcClass = DivideTwoNumbersExamples.class`). In case of a source method, the method must have a single parameter of type `ExampleSource`; in case of a source class, the class must be derived from `ExampleSource` and must have a default constructor. The values of each example are set with the builder methods of the `ExampleSource`, whereby the order and the types must match the parameters of the test method.
 
 The textual output of examples can be controlled in the following ways:
 
-Usually the description of the examples is generated from the name of the test method, this can be overridden with
-defining a custom `desc()`
+Usually the general description of the examples is generated from the name of the test method, this can be overridden with defining a custom `desc`
 
 ```Java
-@Examples(desc = "Examples for doing something", pattern = "{0} * 2 => {1}", srcMethod = "doSomething")
+@Examples(desc = "Examples for doing something", pattern = "{0} * 2 => {1}", srcMethod = "doSomethingExamples")
 void doSomething(final int a, final int expected) { 
     ... 
 }
 ```
 
-For each individual example, a pattern in the Java `MessageFormat` must be specified in which the placeholders will be replaced by the respective values.
+In order to generate a description for each individual example, a pattern in the Java `MessageFormat` must be specified in which the placeholders will be replaced by the respective values.
 
 ```Java
-@Examples(pattern = "{0} less then {1} => {2}", srcClass = MyExamples.class)
-void myExamples(final int a, final int b, final boolean expected) {
+@Examples(pattern = "{0} less then {1} => {2}", srcClass = DoSomethingExamples.class)
+void doSomething(final int a, final int b, final boolean expected) {
     .... 
 }
 ```
@@ -333,11 +334,11 @@ void myExamples(final int a, final int b, final boolean expected) {
 During execution each example will be prefixed with the examples index e.g. `1)`, `2)` and so on. If required a special prefix can be specified for each individual example using the `ExampleSource` builder API.
 
 ```Java
-example("{0}. Adding only positive numbers:", given (3), given (4), given (5), then (12));
-example("{0}. Adding positive and negative numbers:", given (-3), given (4), given (-5), then (-4));
+example("{0}) Adding only positive numbers:", given (3), given (4), given (5), then (12));
+example("{0}) Adding positive and negative numbers:", given (-3), given (4), given (-5), then (-4));
 ```
 
-For more complex values where `toString` is not sufficient it is possible to specify a static descriptive text or a string conversion function for every value.
+For more complex parameter where the values `toString` is not sufficient it is possible to specify a static descriptive text or a string conversion function for every value.
 
 ```Java
 final Function<Integer[], String> intArrayToStr = (n) -> Joiner.on(" + ").join(n);
