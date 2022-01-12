@@ -3,6 +3,7 @@ package com.github.mictaege.arete;
 import static com.github.mictaege.arete.SeqAndStepPriority.priority;
 import static java.lang.Math.max;
 import static java.util.Comparator.comparing;
+import static org.junit.jupiter.api.Order.DEFAULT;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -19,7 +20,7 @@ public class ScenarioOrderer implements MethodOrderer {
     }
 
     private static SeqAndStepPriority getOrder(final MethodDescriptor descriptor) {
-        final AtomicReference<SeqAndStepPriority> order = new AtomicReference<>(priority(1, 1, Order.DEFAULT));
+        final AtomicReference<SeqAndStepPriority> order = new AtomicReference<>(priority(DEFAULT, DEFAULT, DEFAULT));
         descriptor.findAnnotation(Given.class).ifPresent(g -> {
             order.set(priority(g.seq(), 1, max(g.value(), g.step())));
         });
@@ -29,8 +30,11 @@ public class ScenarioOrderer implements MethodOrderer {
         descriptor.findAnnotation(Then.class).ifPresent(t -> {
             order.set(priority(t.seq(), 3, max(t.value(), t.step())));
         });
+        descriptor.findAnnotation(Examples.class).ifPresent(e -> {
+            order.set(priority(DEFAULT, DEFAULT, e.order()));
+        });
         descriptor.findAnnotation(Order.class).ifPresent(o -> {
-            order.set(priority(1, 1, o.value()));
+            order.set(priority(DEFAULT, DEFAULT, o.value()));
         });
         return order.get();
     }

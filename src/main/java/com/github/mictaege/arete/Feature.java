@@ -17,9 +17,12 @@ import org.junit.jupiter.api.TestMethodOrder;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Nested
+@TestMethodOrder(FeatureOrderer.class)
 @DisplayNameGeneration(FeatureNameGenerator.class)
 @TestInstance(PER_CLASS)
 public @interface Feature {
+
+    int value() default 1;
 
     String desc() default "";
 

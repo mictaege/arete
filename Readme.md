@@ -9,6 +9,8 @@ Arete is a lightweight JUnit 5 extension that enables a BDD testing style by des
 
 ![Test run](TestRun.png)
 
+See [arete-gradle](http://github.com/mictaege/arete-gradle) for the Arete Gradle reporting plugin.
+
 ## Overview
 
 ### Gerkhin style
@@ -252,3 +254,95 @@ In Gherkin style scenarios related to a common functionality can be grouped into
 }
 ```
 In descriptive style expectations related to a common functionality can be grouped into different nested descriptions.
+
+## Examples
+
+Since it is often very helpful to illustrate a functionality with examples, such examples can be defined with Arete.
+
+Scenario extended with examples:
+
+```Java
+@Scenario class ShouldAddTwoNumbers {
+
+    @Given void fiveAndTen() {...}
+    @When void addingTogether() {...}
+    @Then void theResultShouldFifteen) {...}
+    
+    @Examples(pattern = "{0} + {1} => {2}", srcMethod = "addingTwoNumbersExamples")
+    void addingTwoNumbers(final int a, final int b, final int expected) {
+        assertThat(calculator.add(a, b), is(expected));
+    }
+
+    void addingTwoNumbersExamples(final ExampleSource s) {
+        s.example(s.given(3), s.given(4), s.then(7));
+        s.example(s.given(-3), s.given(4), s.then(1));
+        s.example(s.given(-3), s.given(-4), s.then(-7));
+    }    
+}
+```
+
+Description extended with examples:
+
+```Java
+@Describe class Division {
+    @ItShould void divideTwoNumbers() {...}
+
+    @ItShould void notDivideByZero() {...}
+
+    @Examples(pattern = "{0} : {1} => {2}", srcClass = DivideTwoNumbersExamples.class)
+    void divideTwoNumbers(final int a, final int b, final double expected) {
+        assertThat(calculator.divide(a, b), is(expected));
+    }
+
+    class DivideTwoNumbersExamples extends ExampleSource {
+        @Override
+        protected void init() {
+            example(given(9), given(3), then(3.0));
+            example(given(9), given(-3), then(-3.0));
+            example(given(-9), given(3), then(-3.0));
+            example(given(-9), given(-3), then(3.0));
+        }
+    }
+
+}
+```
+
+Examples are defined with a test method that is annotated with `@Examples`. This method takes several parameters that are used to implement the test. 
+
+In order to call the test with different parameters, a source for the examples must be given. The source can either be a local method (`srcMethod = "addingTwoNumbersExamples"`) or a class (`srcClass = DivideTwoNumbersExamples.class`). In case of a source method, the method must have a single parameter of type `ExampleSource`; in case of a source class, the class must be derived from `ExampleSource` and must have a default constructor. The values of each example are set with the builder methods of the `ExampleSource`, whereby the order and the types must match the parameters of the test method.
+
+The textual output of examples can be controlled in the following ways:
+
+Usually the general description of the examples is generated from the name of the test method, this can be overridden with defining a custom `desc`
+
+```Java
+@Examples(desc = "Examples for doing something", pattern = "{0} * 2 => {1}", srcMethod = "doSomethingExamples")
+void doSomething(final int a, final int expected) { 
+    ... 
+}
+```
+
+In order to generate a description for each individual example, a pattern in the Java `MessageFormat` must be specified in which the placeholders will be replaced by the respective values.
+
+```Java
+@Examples(pattern = "{0} less then {1} => {2}", srcClass = DoSomethingExamples.class)
+void doSomething(final int a, final int b, final boolean expected) {
+    .... 
+}
+```
+
+During execution each example will be prefixed with the examples index e.g. `1)`, `2)` and so on. If required a special prefix can be specified for each individual example using the `ExampleSource` builder API.
+
+```Java
+example("{0}) Adding only positive numbers:", given (3), given (4), given (5), then (12));
+example("{0}) Adding positive and negative numbers:", given (-3), given (4), given (-5), then (-4));
+```
+
+For more complex parameter where the values `toString` is not sufficient it is possible to specify a static descriptive text or a string conversion function for every value.
+
+```Java
+final Function<Integer[], String> intArrayToStr = (n) -> Joiner.on(" + ").join(n);
+example(expect(34),  when(new Integer[]{3, 7, 4, 9, 11}, intArrayToStr));
+example(expect(-2),  when(new Integer[]{3, 7, -8, 2, -6}, intArrayToStr));
+example(expect(-26),  when(new Integer[]{-3, -7, -8, -2, -6}, intArrayToStr));
+```

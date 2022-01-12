@@ -3,10 +3,12 @@ package com.github.mictaege.arete;
 import static com.github.mictaege.arete.NamingTools.Capitalizer.CAPITALIZE_ALL;
 import static com.github.mictaege.arete.NamingTools.Capitalizer.UN_CAPITALIZE_ALL;
 import static com.github.mictaege.arete.NamingTools.toWords;
+import static java.util.Optional.ofNullable;
 import static org.junit.platform.commons.support.AnnotationSupport.findAnnotation;
 
 import java.lang.reflect.Method;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.jupiter.api.DisplayNameGenerator;
 
@@ -38,15 +40,25 @@ public class DescribeNameGenerator implements DisplayNameGenerator {
     }
 
     private Optional<String> desc(final Method testMethod) {
-        return findAnnotation(testMethod, ItShould.class)
-                .map(ItShould::desc)
-                .map(Strings::emptyToNull);
+        final AtomicReference<String> desc = new AtomicReference<>("");
+        findAnnotation(testMethod, ItShould.class).ifPresent(i -> {
+            desc.set(i.desc());
+        });
+        findAnnotation(testMethod, Examples.class).ifPresent(e -> {
+            desc.set(e.desc());
+        });
+        return ofNullable(desc.get()).map(Strings::emptyToNull);
     }
 
     private String prefix(final Method testMethod) {
-        return findAnnotation(testMethod, ItShould.class)
-                .map(i -> "It should ")
-                .orElse("");
+        final AtomicReference<String> prefix = new AtomicReference<>("");
+        findAnnotation(testMethod, ItShould.class).ifPresent(g -> {
+            prefix.set("It should ");
+        });
+        findAnnotation(testMethod, Examples.class).ifPresent(g -> {
+            prefix.set("Examples: ");
+        });
+        return prefix.get();
     }
 
 }
