@@ -11,6 +11,14 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import com.google.common.base.Joiner;
 
+@Narrative({
+        "In order to perform arithmetic calculations",
+        "A calculator should provide the basic operations",
+        "- addition",
+        "- subtraction",
+        "- multiplication",
+        "- division"
+})
 @Spec class CalculatorDescriptiveStyleSpec {
 
     @RegisterExtension

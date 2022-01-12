@@ -14,6 +14,10 @@ public class Calculator {
         return Arrays.stream(a).reduce((x,y) -> x - y).orElse(0);
     }
 
+    public Integer multiply(final Integer a, final Integer b) {
+        return a * b;
+    }
+
     public double divide(final Integer a, final Integer b) {
         checkArgument(b != 0);
         return (((double)a/(double)b));
