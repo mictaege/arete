@@ -187,6 +187,7 @@ class ShouldAddFiveToTen {
     ...
 }
 ```
+
 ## Nesting and Grouping
 
 ### Gherkin Style
@@ -254,6 +255,25 @@ In Gherkin style scenarios related to a common functionality can be grouped into
 }
 ```
 In descriptive style expectations related to a common functionality can be grouped into different nested descriptions.
+
+
+## Narratives
+
+In order to document User-Stories, Requirements or other background information Specifications, Features, Scenarios and Descriptions could be annotated with `@Narrative`.
+
+```Java
+@Narrative({
+        "In order to perform arithmetic calculations",
+        "A calculator should provide the basic operations",
+        "- addition",
+        "- subtraction",
+        "- multiplication",
+        "- division"
+})
+@Spec class CalculatorSpec {
+    ...
+}
+```
 
 ## Examples
 
