@@ -51,6 +51,9 @@ public class ScenarioNameGenerator implements DisplayNameGenerator {
         findAnnotation(testMethod, Then.class).ifPresent(t -> {
             desc.set(t.desc());
         });
+        findAnnotation(testMethod, Examples.class).ifPresent(e -> {
+            desc.set(e.desc());
+        });
         return ofNullable(desc.get()).map(Strings::emptyToNull);
     }
 
@@ -76,6 +79,9 @@ public class ScenarioNameGenerator implements DisplayNameGenerator {
             } else {
                 prefix.set("And ");
             }
+        });
+        findAnnotation(testMethod, Examples.class).ifPresent(g -> {
+            prefix.set("Examples: ");
         });
         return prefix.get();
     }

@@ -1,6 +1,7 @@
 package com.github.mictaege.arete;
 
 import static com.github.mictaege.arete.NamingTools.Capitalizer.CAPITALIZE_ALL;
+import static com.github.mictaege.arete.NamingTools.Capitalizer.UN_CAPITALIZE_ALL;
 import static com.github.mictaege.arete.NamingTools.toWords;
 import static org.junit.platform.commons.support.AnnotationSupport.findAnnotation;
 
@@ -26,13 +27,26 @@ public class FeatureNameGenerator implements DisplayNameGenerator {
 
     @Override
     public String generateDisplayNameForMethod(final Class<?> testClass, final Method testMethod) {
-        return testMethod.getName();
+        return desc(testMethod)
+                .orElse(prefix(testMethod) + toWords(testMethod.getName(), UN_CAPITALIZE_ALL));
     }
 
     private Optional<String> desc(final Class<?> nestedClass) {
         return findAnnotation(nestedClass, Feature.class)
                 .map(Feature::desc)
                 .map(Strings::emptyToNull);
+    }
+
+    private Optional<String> desc(final Method testMethod) {
+        return findAnnotation(testMethod, Examples.class)
+                .map(Examples::desc)
+                .map(Strings::emptyToNull);
+    }
+
+    private String prefix(final Method testMethod) {
+        return findAnnotation(testMethod, Examples.class)
+                .map(i -> "Examples: ")
+                .orElse("");
     }
     
 }

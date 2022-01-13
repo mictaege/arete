@@ -6,16 +6,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.TestMethodOrder;
-
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@TestMethodOrder(SpecOrderer.class)
-@DisplayNameGeneration(SpecNameGenerator.class)
-public @interface Spec {
+public @interface Narrative {
 
-    String desc() default "";
+    String header() default "Narrative:";
+
+    String[] value();
 
 }

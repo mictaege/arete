@@ -9,17 +9,23 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.MethodOrdererContext;
 import org.junit.jupiter.api.Order;
 
-public class DescribeOrderer implements MethodOrderer {
+public class SpecOrderer implements MethodOrderer {
 
     @Override
     public void orderMethods(final MethodOrdererContext context) {
-        context.getMethodDescriptors().sort(comparingInt(DescribeOrderer::getOrder));
+        context.getMethodDescriptors().sort(comparingInt(SpecOrderer::getOrder));
     }
 
     private static int getOrder(final MethodDescriptor descriptor) {
         final AtomicReference<Integer> order = new AtomicReference<>(Order.DEFAULT);
-        descriptor.findAnnotation(ItShould.class).ifPresent(i -> {
-            order.set(i.value());
+        descriptor.findAnnotation(Feature.class).ifPresent(f -> {
+            order.set(f.value());
+        });
+        descriptor.findAnnotation(Describe.class).ifPresent(d -> {
+            order.set(d.value());
+        });
+        descriptor.findAnnotation(Scenario.class).ifPresent(s -> {
+            order.set(s.value());
         });
         descriptor.findAnnotation(Examples.class).ifPresent(i -> {
             order.set(i.order());
