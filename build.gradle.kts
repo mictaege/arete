@@ -17,14 +17,14 @@ repositories {
 }
 
 dependencies {
-    implementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
-    implementation("com.google.guava:guava:30.1.1-jre")
-    implementation("org.apache.commons:commons-text:1.9")
+    implementation("org.junit.jupiter:junit-jupiter-api:5.9.1")
+    implementation("com.google.guava:guava:31.1-jre")
+    implementation("org.apache.commons:commons-text:1.10.0")
     implementation("org.apache.commons:commons-lang3:3.12.0")
 
     testImplementation("org.hamcrest:hamcrest:2.2")
-    testImplementation("org.mockito:mockito-core:3.9.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.0")
+    testImplementation("org.mockito:mockito-core:4.8.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.1")
 }
 
 tasks.test {
