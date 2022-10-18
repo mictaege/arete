@@ -4,8 +4,8 @@ plugins {
     signing
 }
 
-group = "com.github.mictaege"
-version = "2022.3"
+group = "io.github.mictaege"
+version = "2022.4"
 
 tasks.wrapper {
     gradleVersion = "7.5.1"
@@ -80,8 +80,8 @@ publishing {
     }
     repositories {
         maven {
-            val releasesRepoUrl = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
-            val snapshotsRepoUrl = uri("https://oss.sonatype.org/content/repositories/snapshots/")
+            val releasesRepoUrl = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+            val snapshotsRepoUrl = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
             url = if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
             credentials {
                 username = if (hasProperty("ossrhUsername")) property("ossrhUsername") as String else ""
