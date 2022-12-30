@@ -366,3 +366,16 @@ example(expect(34),  when(new Integer[]{3, 7, 4, 9, 11}, intArrayToStr));
 example(expect(-2),  when(new Integer[]{3, 7, -8, 2, -6}, intArrayToStr));
 example(expect(-26),  when(new Integer[]{-3, -7, -8, -2, -6}, intArrayToStr));
 ```
+
+## Linking between Specifications, Features, Descriptions and Scenarios
+
+In order to describe relationships between specifications, features, descriptions and scenarios they could be linked together using the `@SeeAlso` annotation. Both the source and the target of such an annotation can either be a top-level specification or any nested feature, description or scenario.
+
+```Java
+@SeeAlso(CalculatorSpec.class)
+@SeeAlso(CalculatorSpec.AdditionFeature.ShouldAddTwoNumbers.class)
+@SeeAlso(CalculatorSpec.DivisionDescription.class)
+@Scenario class CalculateTheAverage { 
+    ...
+}
+```
