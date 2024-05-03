@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "io.github.mictaege"
-version = "2022.9"
+version = "2024.1"
 
 tasks.wrapper {
     gradleVersion = "8.7"
