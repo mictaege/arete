@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "io.github.mictaege"
-version = "2024.1"
+version = "2024.1.1"
 
 tasks.wrapper {
     gradleVersion = "8.7"
@@ -32,6 +32,8 @@ tasks.test {
 }
 
 java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
     withJavadocJar()
     withSourcesJar()
 }
