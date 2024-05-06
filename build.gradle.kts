@@ -5,10 +5,10 @@ plugins {
 }
 
 group = "io.github.mictaege"
-version = "2022.9"
+version = "2024.2"
 
 tasks.wrapper {
-    gradleVersion = "7.5.1"
+    gradleVersion = "8.7"
     distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -17,14 +17,14 @@ repositories {
 }
 
 dependencies {
-    implementation("org.junit.jupiter:junit-jupiter-api:5.9.1")
-    implementation("com.google.guava:guava:31.1-jre")
-    implementation("org.apache.commons:commons-text:1.10.0")
-    implementation("org.apache.commons:commons-lang3:3.12.0")
+    implementation("org.junit.jupiter:junit-jupiter-api:5.10.2")
+    implementation("com.google.guava:guava:33.2.0-jre")
+    implementation("org.apache.commons:commons-text:1.12.0")
+    implementation("org.apache.commons:commons-lang3:3.14.0")
 
     testImplementation("org.hamcrest:hamcrest:2.2")
-    testImplementation("org.mockito:mockito-core:4.8.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.1")
+    testImplementation("org.mockito:mockito-core:5.11.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.2")
 }
 
 tasks.test {
@@ -32,6 +32,8 @@ tasks.test {
 }
 
 java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
     withJavadocJar()
     withSourcesJar()
 }
