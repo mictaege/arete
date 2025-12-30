@@ -38,18 +38,18 @@ import com.google.common.base.Joiner;
                 subtractTwoNumbers(5, 10, -5);
             }
 
-            @Examples(pattern = "{0} - {1} => {2}", srcMethod = "subtractTwoNumbersExamples")
+            @ExampleGrid(columns = {"a",  "b", "Diff"}, srcMethod = "subtractTwoNumbersData")
             void subtractTwoNumbers(final int a, final int b, final int expected) {
                 assertThat(calculator.subtract(a, b), is(expected));
             }
 
-            void subtractTwoNumbersExamples(final ExampleSource s) {
-                s.example(s.given(10),  s.given(3), s.then(7));
-                s.example(s.given(10),  s.given(10), s.then(0));
-                s.example(s.given(10),  s.given(17), s.then(-7));
-                s.example(s.given(-5),  s.given(5), s.then(-10));
-                s.example(s.given(-5),  s.given(-5), s.then(0));
-                s.example(s.given(-5),  s.given(-7), s.then(2));
+            void subtractTwoNumbersData(final ExampleGridSource s) {
+                s.row(s.given(10),  s.given(3), s.then(7));
+                s.row(s.given(10),  s.given(10), s.then(1));
+                s.row(s.given(10),  s.given(17), s.then(-7));
+                s.row(s.given(-5),  s.given(5), s.then(-10));
+                s.row(s.given(-5),  s.given(-5), s.then(0));
+                s.row(s.given(-5),  s.given(-7), s.then(2));
             }
 
         }
