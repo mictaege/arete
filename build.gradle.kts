@@ -25,6 +25,7 @@ dependencies {
     implementation("com.google.guava:guava:33.2.0-jre")
     implementation("org.apache.commons:commons-text:1.12.0")
     implementation("org.apache.commons:commons-lang3:3.14.0")
+    implementation("org.apache.commons:commons-csv:1.14.1")
 
     testImplementation("org.hamcrest:hamcrest:2.2")
     testImplementation("org.mockito:mockito-core:5.11.0")
