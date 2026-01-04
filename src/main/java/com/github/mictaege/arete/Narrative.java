@@ -19,4 +19,6 @@ public @interface Narrative {
 
     String[] plantUml() default {};
 
+    String[] attachmentResourcePath() default {};
+
 }
