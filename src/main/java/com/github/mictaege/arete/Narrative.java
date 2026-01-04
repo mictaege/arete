@@ -17,4 +17,6 @@ public @interface Narrative {
 
     String[] imageResourcePath() default {};
 
+    String[] plantUml() default {};
+
 }
