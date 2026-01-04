@@ -15,4 +15,6 @@ public @interface Narrative {
 
     String[] value();
 
+    String[] imageResourcePath() default {};
+
 }
