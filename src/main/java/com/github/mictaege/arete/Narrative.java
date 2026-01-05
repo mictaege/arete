@@ -15,4 +15,10 @@ public @interface Narrative {
 
     String[] value();
 
+    String[] imageResourcePath() default {};
+
+    String[] plantUml() default {};
+
+    String[] attachmentResourcePath() default {};
+
 }
