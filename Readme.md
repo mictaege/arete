@@ -45,7 +45,7 @@ See [arete-gradle](http://github.com/mictaege/arete-gradle) for the Arete Gradle
 ```
 A specification written in Gerkhin style contains one or more scenarios as nested classes. Each scenario defines several executable steps.
 
-See [arete tests](/src/test/java/com/github/mictaege/arete) for more examples.
+See [arete-gradle-test](https://github.com/mictaege/arete-gradle-test/tree/master/src/test/java/com/github/mictaege/travel_agency) for more examples.
 
 ### Descriptive Style
 
@@ -275,6 +275,76 @@ In order to document User-Stories, Requirements or other background information 
 }
 ```
 
+`@Narrative` also supports basic markdown formatting
+
+```Java
+@Narrative(
+        """
+        In order to *perform arithmetic calculations*
+        A *calculator* should provide the *basic operations*:
+        - addition
+        - subtraction
+        - multiplication
+        - division
+        """
+)
+@Spec class CalculatorSpec {
+    ...
+}
+```
+
+and to embedded images, PlantUML diagrams and attachments of any files.
+
+```Java
+@Spec
+@Narrative(
+        value =
+                """
+                > As a *traveler* I want to *select a payment method* so that I can *define which of my accounts will be charged*
+                > - and I want that *the transaction is save* so that I could *be sure that my money is not lost*
+                > - and I want to *receive a booking confirmation* so that I can *prove the booking has been made*
+                > - and I want to *receive an invoice* so that I can *claim the expenses for tax purposes*.
+                
+                > As an *accommodation* I want that *the transaction is save* so that I could *be sure that I will receive the money*.
+                """,
+        imageResourcePath = {
+                "com/github/mictaege/travel_agency/room1.png",
+                "com/github/mictaege/travel_agency/room2.png"
+        },
+        plantUml =
+                """
+                @startuml
+                
+                left to right direction
+                
+                :Traveler:
+                :Accommodation:
+                :PaymentService:
+                
+                Traveler --> (Book Room)
+                Traveler --> (Select Payment Method)
+                Accommodation --> (Offer Payment Methods)
+                (Book Room) .> (Select Payment Method) : <<include>>
+                PaymentService --> (Ensure Secure Transaction)
+                (Offer Payment Methods) .> (Ensure Secure Transaction) : <<include>>
+                (Select Payment Method) .> (Ensure Secure Transaction) : <<include>>
+                Traveler --> (Receive Booking Confirmation)
+                Traveler --> (Receive Invoice)
+                @enduml
+                """,
+        attachmentResourcePath = {
+                "com/github/mictaege/travel_agency/example-confirmation.pdf",
+                "com/github/mictaege/travel_agency/example-invoice.pdf"
+        }
+
+)
+class BookingProcessSpec {
+    ...
+}
+```
+
+![Test run](Narrative.png)
+
 ## Examples
 
 Since it is often very helpful to illustrate a functionality with examples, such examples can be defined with Arete.
@@ -365,6 +435,44 @@ final Function<Integer[], String> intArrayToStr = (n) -> Joiner.on(" + ").join(n
 example(expect(34),  when(new Integer[]{3, 7, 4, 9, 11}, intArrayToStr));
 example(expect(-2),  when(new Integer[]{3, 7, -8, 2, -6}, intArrayToStr));
 example(expect(-26),  when(new Integer[]{-3, -7, -8, -2, -6}, intArrayToStr));
+```
+
+### Tabular Examples (ExampleGrid and ExampleCsv)
+
+For scenarios that are best described in a table (e.g., matrix-based logic), `@ExampleGrid` or `@ExampleCsv` can be used:
+
+```Java
+@ExampleGrid(
+    desc = "Availability matrix:",
+    columns = { "Request From", "Request To", "Available?" },
+    srcMethod = "availabilitySource"
+)
+//parameters of any type
+void testAvailability(LocalDate from, LocalDate to, boolean expected) {
+    assertThat(check(from, to), is(expected));
+}
+
+private void availabilitySource(ExampleGridSource s) {
+    s.row(s.when(date(1)), s.when(date(5)), s.then(true));
+    s.row(s.when(date(6)), s.when(date(10)), s.then(false));
+}
+```
+
+```Java
+@ExampleCsv(
+    desc = "Availability matrix:",
+    columns = { "Request From", "Request To", "Available?" },
+    delimiter = '|',
+    csvData =
+            """
+            2026-01-01 | 2026-01-05 | true
+            2026-01-06 | 2026-01-10 | false
+            """
+)
+//only String parameters
+void testAvailability(String from, String to, String expected) {
+    assertThat(check(parseDate(from), parseDate(to)), is(parseBool(expected)));
+}
 ```
 
 ## Linking between Specifications, Features, Descriptions and Scenarios

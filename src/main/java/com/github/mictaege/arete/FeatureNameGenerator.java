@@ -4,6 +4,7 @@ import static com.github.mictaege.arete.NamingTools.Capitalizer.CAPITALIZE_ALL;
 import static com.github.mictaege.arete.NamingTools.Capitalizer.UN_CAPITALIZE_ALL;
 import static com.github.mictaege.arete.NamingTools.toWords;
 import static org.junit.platform.commons.support.AnnotationSupport.findAnnotation;
+import static org.junit.platform.commons.support.AnnotationSupport.isAnnotated;
 
 import java.lang.reflect.Method;
 import java.util.Optional;
@@ -38,9 +39,22 @@ public class FeatureNameGenerator implements DisplayNameGenerator {
     }
 
     private Optional<String> desc(final Method testMethod) {
-        return findAnnotation(testMethod, Examples.class)
-                .map(Examples::desc)
-                .map(Strings::emptyToNull);
+        if (isAnnotated(testMethod, Examples.class)) {
+            return findAnnotation(testMethod, Examples.class)
+                    .map(Examples::desc)
+                    .map(Strings::emptyToNull);
+        } else if (isAnnotated(testMethod, ExampleGrid.class)) {
+            return findAnnotation(testMethod, ExampleGrid.class)
+                    .map(ExampleGrid::desc)
+                    .map(Strings::emptyToNull);
+        } else if (isAnnotated(testMethod, ExampleCsv.class)) {
+            return findAnnotation(testMethod, ExampleCsv.class)
+                    .map(ExampleCsv::desc)
+                    .map(Strings::emptyToNull);
+        } else {
+            return Optional.empty();
+        }
+
     }
 
     private String prefix(final Method testMethod) {

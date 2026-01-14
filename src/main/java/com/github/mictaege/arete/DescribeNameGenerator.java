@@ -47,6 +47,12 @@ public class DescribeNameGenerator implements DisplayNameGenerator {
         findAnnotation(testMethod, Examples.class).ifPresent(e -> {
             desc.set(e.desc());
         });
+        findAnnotation(testMethod, ExampleGrid.class).ifPresent(e -> {
+            desc.set(e.desc());
+        });
+        findAnnotation(testMethod, ExampleCsv.class).ifPresent(e -> {
+            desc.set(e.desc());
+        });
         return ofNullable(desc.get()).map(Strings::emptyToNull);
     }
 
