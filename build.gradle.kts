@@ -21,7 +21,7 @@ repositories {
 }
 
 dependencies {
-    implementation("org.junit.jupiter:junit-jupiter-api:5.11.4")
+    implementation("org.junit.jupiter:junit-jupiter-api:6.0.2")
     implementation("com.google.guava:guava:33.5.0-jre")
     implementation("org.apache.commons:commons-text:1.15.0")
     implementation("org.apache.commons:commons-lang3:3.20.0")
@@ -29,7 +29,8 @@ dependencies {
 
     testImplementation("org.hamcrest:hamcrest:3.0")
     testImplementation("org.mockito:mockito-core:5.21.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.11.4")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:6.0.2")
+    testImplementation("org.junit.platform:junit-platform-launcher:6.0.2")
 }
 
 tasks.test {
@@ -37,8 +38,8 @@ tasks.test {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
     withJavadocJar()
     withSourcesJar()
 }
@@ -63,7 +64,7 @@ publishing {
             }
             pom {
                 name.set("arete")
-                description.set("This repository contains the arete JUnit5 extention.")
+                description.set("This repository contains the arete JUnit6 extention.")
                 url.set("https://github.com/mictaege/arete")
                 licenses {
                     license {
@@ -96,7 +97,7 @@ publishing {
 jreleaser {
     project {
         copyright.set("Michael Taege")
-        description.set("This repository contains the arete JUnit5 extention.")
+        description.set("This repository contains the arete JUnit6 extention.")
     }
     signing {
         active.set(Active.ALWAYS)
