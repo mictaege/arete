@@ -345,6 +345,43 @@ class BookingProcessSpec {
 
 ![Test run](Narrative.png)
 
+## Tags
+
+Arete uses JUnit 5 tags to group and classify specifications, scenarios, and nested specification parts.
+You can use plain `@Tag` annotations directly, but it's usually more useful to create domain-specific tag annotations.
+
+```Java
+@Target(TYPE)
+@Retention(RUNTIME)
+@Tag("traveller")
+public @interface Customer {
+}
+```
+
+Domain-specific tags could also be classified with a `@StereoType`. A typical approach is to model relevant business concepts
+as reusable annotations, for example actors, entities, external systems, workflows, etc.:
+
+```Java
+@Target(TYPE)
+@Retention(RUNTIME)
+@Tag("traveller")
+@StereoType(ACTOR)
+public @interface Customer {
+}
+```
+Usage:
+
+```Java
+@Spec
+@Narrative("...")
+@Traveller @Room @PaymentService
+class BookingProcessSpec {
+    ...
+}
+```
+
+In the generated Arete report, these tags are listed on the tags page and can be used to search and filter specifications.
+
 ## Examples
 
 Since it is often very helpful to illustrate a functionality with examples, such examples can be defined with Arete.
