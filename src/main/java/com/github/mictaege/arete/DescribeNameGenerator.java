@@ -7,6 +7,7 @@ import static java.util.Optional.ofNullable;
 import static org.junit.platform.commons.support.AnnotationSupport.findAnnotation;
 
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -22,13 +23,13 @@ public class DescribeNameGenerator implements DisplayNameGenerator {
     }
 
     @Override
-    public String generateDisplayNameForNestedClass(final Class<?> nestedClass) {
+    public String generateDisplayNameForNestedClass(List<Class<?>> enclosingInstanceTypes, final Class<?> nestedClass) {
         return desc(nestedClass)
                 .orElse("Describe: " + toWords(nestedClass.getSimpleName(), CAPITALIZE_ALL));
     }
 
     @Override
-    public String generateDisplayNameForMethod(final Class<?> testClass, final Method testMethod) {
+    public String generateDisplayNameForMethod(List<Class<?>> enclosingInstanceTypes, final Class<?> testClass, final Method testMethod) {
         return desc(testMethod)
                 .orElse(prefix(testMethod) + toWords(testMethod.getName(), UN_CAPITALIZE_ALL));
     }

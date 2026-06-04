@@ -21,6 +21,12 @@ public class FeatureOrderer implements MethodOrderer {
         descriptor.findAnnotation(Feature.class).ifPresent(f -> {
             order.set(f.value());
         });
+        descriptor.findAnnotation(Journey.class).ifPresent(d -> {
+            order.set(d.value());
+        });
+        descriptor.findAnnotation(VariableJourney.class).ifPresent(d -> {
+            order.set(d.value());
+        });
         descriptor.findAnnotation(Describe.class).ifPresent(d -> {
             order.set(d.value());
         });
