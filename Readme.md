@@ -63,13 +63,110 @@ See [arete-gradle-test](https://github.com/mictaege/arete-gradle-test/tree/maste
 ```
 A specification written in descriptive style contains one or more descriptions as nested classes. Each description defines several executable expectations.
 
+See [arete-gradle-test](https://github.com/mictaege/arete-gradle-test/tree/master/src/test/java/com/github/mictaege/travel_agency) for more examples.
+
+### Journey Style
+
+```Java
+@Spec class ComplaintMediationSpec {
+    @Journey
+    class RefundNotPaid {
+
+        @BeforeAll
+        void context() {
+            //...
+        }
+
+        @Step(1)
+        void anAccommodationIsToldToPayARefund() {
+            //...
+        }
+
+        @Step(2)
+        void afterEnoughTimeTheTravelerHasNotReceivedAnyRefund() {
+            //...
+        }
+
+        @Step(3)
+        void theTravelerComplainsAboutTheLackOfARefund() {
+            //...
+        }
+
+        @Step(4)
+        void theAgencyPaysTheRefundOnBehalfOfTheAccommodation() {
+            //...
+        }
+    }
+}
+```
+
+A specification written in Journey style describes a concrete end-to-end flow as a sequence of ordered steps.  
+Compared to the Gherkin style, Journeys do not split the flow into `@Given`, `@When` and `@Then` phases.
+Instead, every executable method is annotated with `@Step`.
+
+This is useful when the specification should read like a business process, user journey or workflow,
+especially if the distinction between setup, action and expectation would make the story harder to follow.
+
+For flows with alternative paths, `@VariableJourney` can be used:
+```Java
+@Spec class ComplaintMediationSpec {
+    @VariableJourney
+    class ComplaintMediation {
+
+        static final String JUSTIFIED_COMPLAINT = "Justified Complaint";
+        static final String UNJUSTIFIED_COMPLAINT = "Unjustified Complaint";
+
+        @BeforeAll
+        void context() {
+            //...
+        }
+        
+        @Step(1)
+        void anAccommodationOffersSomeRooms() {
+            //...
+        }
+
+        @Step(2)
+        void aTravellerSearchesForARoom() {
+            //...
+        }
+
+        @Step(value = 3, variant = JUSTIFIED_COMPLAINT)
+        void theTravellerComplainsAboutAMissingFacilityThatHasBeenOffered() {
+            //...
+        }
+
+        @Step(value = 3, variant = UNJUSTIFIED_COMPLAINT)
+        void theTravellerComplainsAboutAMissingFacilityThatHasNotBeenOffered() {
+            //...
+        }
+
+        @Step(4)
+        void finallyTheCaseIsClosed() {
+            //...
+        }
+    }
+}
+
+```
+A variable journey is executed once for every declared step variant. Steps without a variant are part of every variant,
+while steps with a variant are only executed for the matching journey variant.
+
 See [arete tests](/src/test/java/com/github/mictaege/arete) for more examples.
 
 ## Lifecycle and Scope
 
-In Gerkhin style each scenario is a single test instance (`@TestInstance(PER_CLASS)`), and all steps are sharing the same test instance and it's state. In this way, one step can access the results of another step. But this also means that the order in which the steps are being executed is important.
+In Gerkhin style each scenario is a single test instance (`@TestInstance(PER_CLASS)`), and all steps are sharing the same test instance and it's state.
+In this way, one step can access the results of another step. But this also means that the order in which the steps are being executed is important.
 
-In descriptive style a description is always a new test instance (`@TestInstance(PER_METHOD)`), and all expectations has there own exclusive test instance. In this way, every expectation is independent and does not rely on the execution order. But this also means that, one expectation can not access the results of another expectation.
+In Journey style each journey is also a single test instance (`@TestInstance(PER_CLASS)`).
+All `@Step` methods share the same instance and state, so a journey can model a flow where later steps depend on earlier steps.
+As with scenarios, this means that the execution order is relevant and should be defined explicitly with `@Step`.
+
+A `@VariableJourney` follows the same lifecycle, but is executed separately for every discovered variant.
+
+In descriptive style a description is always a new test instance (`@TestInstance(PER_METHOD)`), and all expectations has there own exclusive test instance.
+In this way, every expectation is independent and does not rely on the execution order. But this also means that, one expectation can not access the results of another expectation.
 
 ## Execution Order in Gerkhin Style
 
@@ -152,6 +249,12 @@ When a _Given_, _When_ or _Then_ sequence consists of more than one step, the in
 ```
 If a specification consists of several consecutive Given-When-Then sequences, the sequence and/or the inner order within the sequence could be defined using the `seq` and/or `step` attribute.
 
+## Execution Order in Journey Style
+
+In Journey style, the order of execution is defined with the `value` of the `@Step` annotation. Steps are executed simply from the lowest value to the highest value.
+
+A `@VariableJourney` uses the same step ordering, but can additionally split the journey into variants:
+
 ## Display Name Generation
 
 Per default Arete uses a display name generation strategy that expects class and method names written in _camelCase_ or tokens separated by _under_scores_.
@@ -190,7 +293,7 @@ class ShouldAddFiveToTen {
 
 ## Nesting and Grouping
 
-### Gherkin Style
+### Gherkin Style and Journey Style
 
 ```Java
 @Spec class CalculatorSpec {
@@ -224,10 +327,23 @@ class ShouldAddFiveToTen {
 
             @Then void theResultShouldBeCorrect() {...}
         }
+
+        @Journey class UsingTheCalculatorForSubtraction {
+            @Step(1) void addANumber() {...}
+
+            @Step(2) void enterTheSubtractionSymbol() {...}
+
+            @Step(3) void addASecondNumber() {...}
+            
+            @Step(4) void pressTheEqualSign() {...}
+            
+            @Step(5) void displayTheResult() {...}
+        }
+        
     }
 }
 ```
-In Gherkin style scenarios related to a common functionality can be grouped into different nested features using the `@Feature` annotation.
+In Gherkin style scenarios and Journeys related to a common functionality can be grouped into different nested features using the `@Feature` annotation.
 
 ### Descriptive Style
 
@@ -259,7 +375,7 @@ In descriptive style expectations related to a common functionality can be group
 
 ## Narratives
 
-In order to document User-Stories, Requirements or other background information Specifications, Features, Scenarios and Descriptions could be annotated with `@Narrative`.
+In order to document User-Stories, Requirements or other background information Specifications, Journeys, Features, Scenarios and Descriptions could be annotated with `@Narrative`.
 
 ```Java
 @Narrative({
@@ -293,7 +409,7 @@ In order to document User-Stories, Requirements or other background information 
 }
 ```
 
-and to embedded images, PlantUML diagrams and attachments of any files.
+and to embed images, PlantUML diagrams and attachments of any files.
 
 ```Java
 @Spec
@@ -347,7 +463,7 @@ class BookingProcessSpec {
 
 ## Tags
 
-Arete uses JUnit 5 tags to group and classify specifications, scenarios, and nested specification parts.
+Arete uses JUnit 5 tags to group and classify specifications, journeys, scenarios, desciptions and all other nested specification parts.
 You can use plain `@Tag` annotations directly, but it's usually more useful to create domain-specific tag annotations.
 
 ```Java
