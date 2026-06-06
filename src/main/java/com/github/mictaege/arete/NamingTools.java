@@ -5,6 +5,7 @@ import static java.util.Optional.ofNullable;
 import java.util.function.Function;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.commons.text.WordUtils;
 
 import com.google.common.base.Joiner;
@@ -37,6 +38,7 @@ class NamingTools {
     enum Capitalizer {
         UN_CAPITALIZE_ALL(WordUtils::uncapitalize),
         CAPITALIZE_ALL(WordUtils::capitalize),
+        CAPITALIZE_FIRST(str -> StringUtils.capitalize(WordUtils.uncapitalize(str))),
         LEAVE_AS_IS(s -> s);
 
         private final Function<String, String> capitalizerFun;
