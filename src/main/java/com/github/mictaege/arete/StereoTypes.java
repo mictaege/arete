@@ -17,7 +17,7 @@ public enum StereoTypes {
     EVENT("Events", "tagged-event"),
     /** Actions performed regularly e.g., Backups, Reorganization */
     SCHEDULE("Schedules", "tagged-schedule"),
-    /** A rule that must be adhered to or fulfilled e.g., Terms & Conditions, Tax-Regulations */
+    /** A rule that must be adhered to or fulfilled e.g., Terms and Conditions, Tax-Regulations */
     RULE("Rules", "tagged-rule"),
     /** Any other notable thing */
     TAG("Tags", "tagged-tag");
