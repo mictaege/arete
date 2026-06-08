@@ -30,7 +30,7 @@ public class VariableJourneyExtension implements ClassTemplateInvocationContextP
     public Stream<ClassTemplateInvocationContext> provideClassTemplateInvocationContexts(final ExtensionContext context) {
         final Class<?> journeyClass = context.getRequiredTestClass();
 
-        final List<String> variants = Arrays.stream(journeyClass.getDeclaredMethods())
+        final List<String> variants = methodsOf(journeyClass)
                 .map(method -> findAnnotation(method, Step.class))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
@@ -48,6 +48,16 @@ public class VariableJourneyExtension implements ClassTemplateInvocationContextP
         return variants.stream().map(JourneyVariantInvocationContext::new);
     }
 
+    private static Stream<Method> methodsOf(final Class<?> type) {
+        if (type == null || type == Object.class) {
+            return Stream.empty();
+        }
+        return Stream.concat(
+                Arrays.stream(type.getDeclaredMethods()),
+                methodsOf(type.getSuperclass())
+        );
+    }
+
     private static class JourneyVariantInvocationContext implements ClassTemplateInvocationContext {
 
         private final String variant;
@@ -61,7 +71,7 @@ public class VariableJourneyExtension implements ClassTemplateInvocationContextP
             if (variant.isEmpty()) {
                 return "Default";
             }
-            return "Variant: " + variant ;
+            return "Variant: " + variant;
         }
 
         @Override
