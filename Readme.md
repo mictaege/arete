@@ -74,7 +74,12 @@ See [arete-gradle-test](https://github.com/mictaege/arete-gradle-test/tree/maste
 
         @BeforeAll
         void context() {
-            //...
+            //executed once before all steps in the journey
+        }
+
+        @BeforeEach
+        void stepContext() {
+            //executed before each single step
         }
 
         @Step(1)
@@ -105,7 +110,7 @@ Compared to the Gherkin style, Journeys do not split the flow into `@Given`, `@W
 Instead, every executable method is annotated with `@Step`.
 
 This is useful when the specification should read like a business process, user journey or workflow,
-especially if the distinction between setup, action and expectation would make the story harder to follow.
+especially if the distinction between setup, action and expectation would makes the story harder to follow.
 
 For flows with alternative paths, `@VariableJourney` can be used:
 ```Java
@@ -118,7 +123,12 @@ For flows with alternative paths, `@VariableJourney` can be used:
 
         @BeforeAll
         void context() {
-            //...
+            //executed once before all variants and all steps of each variant
+        }
+
+        @BeforeEach
+        void stepContext() {
+            //executed before each single step
         }
         
         @Step(1)
@@ -149,14 +159,14 @@ For flows with alternative paths, `@VariableJourney` can be used:
 }
 
 ```
-A variable journey is executed once for every declared step variant. Steps without a variant are part of every variant,
+A variable journey is executed once for every declared variant found in the steps. Steps without a variant are part of every variant,
 while steps with a variant are only executed for the matching journey variant.
 
-See [arete tests](/src/test/java/com/github/mictaege/arete) for more examples.
+See [arete-gradle-test](https://github.com/mictaege/arete-gradle-test/tree/master/src/test/java/com/github/mictaege/travel_agency) for more examples.
 
 ## Lifecycle and Scope
 
-In Gerkhin style each scenario is a single test instance (`@TestInstance(PER_CLASS)`), and all steps are sharing the same test instance and it's state.
+In Gerkhin style each scenario is a single test instance (`@TestInstance(PER_CLASS)`), and all steps are sharing the same test instance, and it's state.
 In this way, one step can access the results of another step. But this also means that the order in which the steps are being executed is important.
 
 In Journey style each journey is also a single test instance (`@TestInstance(PER_CLASS)`).
@@ -463,26 +473,26 @@ class BookingProcessSpec {
 
 ## Tags
 
-Arete uses JUnit 5 tags to group and classify specifications, journeys, scenarios, desciptions and all other nested specification parts.
+Arete uses JUnit tags to group and classify specifications, journeys, scenarios, desciptions and all other nested specification parts.
 You can use plain `@Tag` annotations directly, but it's usually more useful to create domain-specific tag annotations.
 
 ```Java
 @Target(TYPE)
 @Retention(RUNTIME)
 @Tag("traveller")
-public @interface Customer {
+public @interface Traveller {
 }
 ```
 
 Domain-specific tags could also be classified with a `@StereoType`. A typical approach is to model relevant business concepts
-as reusable annotations, for example actors, entities, external systems, workflows, etc.:
+as reusable annotations, for example, actors, entities, external systems, workflows, etc.:
 
 ```Java
 @Target(TYPE)
 @Retention(RUNTIME)
 @Tag("traveller")
 @StereoType(ACTOR)
-public @interface Customer {
+public @interface Traveller {
 }
 ```
 Usage:
@@ -496,7 +506,7 @@ class BookingProcessSpec {
 }
 ```
 
-In the generated Arete report, these tags are listed on the tags page and can be used to search and filter specifications.
+In the generated Arete report, these tags are listed on the tag page and can be used to search and filter specifications.
 
 ## Examples
 
