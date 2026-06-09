@@ -14,5 +14,5 @@ public @interface Step {
 
     String desc() default "";
 
-    String variant() default "";
+    String[] variant() default "";
 }

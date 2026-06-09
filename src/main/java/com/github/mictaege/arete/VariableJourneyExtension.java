@@ -36,7 +36,7 @@ public class VariableJourneyExtension implements ClassTemplateInvocationContextP
                 .map(method -> findAnnotation(method, Step.class))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .map(Step::variant)
+                .flatMap(s -> Arrays.stream(s.variant()))
                 .map(String::trim)
                 .filter(variant -> !variant.isEmpty())
                 .distinct()
@@ -155,28 +155,28 @@ public class VariableJourneyExtension implements ClassTemplateInvocationContextP
                 return ConditionEvaluationResult.enabled("Not a journey step");
             }
 
+            if (selectedVariant.isEmpty()) {
+                return ConditionEvaluationResult.enabled("Step has no variant");
+            }
+
             final Optional<Step> step = findAnnotation(testMethod.get(), Step.class);
 
             if (step.isEmpty()) {
                 return ConditionEvaluationResult.enabled("Not a journey step");
             }
 
-            final String stepVariant = step.get().variant().trim();
+            final List<String> stepVariants = Stream.of(step.get().variant()).map(String::trim).filter(v -> !v.isBlank()).toList();
 
-            if (stepVariant.isEmpty()) {
+            if (stepVariants.isEmpty()) {
                 return ConditionEvaluationResult.enabled("Step has no variant");
             }
 
-            if (selectedVariant.isEmpty()) {
-                return ConditionEvaluationResult.enabled("Journey has no variants");
-            }
-
-            if (stepVariant.equals(selectedVariant)) {
+            if (stepVariants.contains(selectedVariant)) {
                 return ConditionEvaluationResult.enabled("Step matches journey variant " + selectedVariant);
             }
 
             return ConditionEvaluationResult.disabled(
-                    "Step variant " + stepVariant + " does not match journey variant " + selectedVariant
+                    "Step variants " + stepVariants + " does not match journey variant " + selectedVariant
             );
         }
 
