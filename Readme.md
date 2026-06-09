@@ -125,6 +125,11 @@ For flows with alternative paths, `@VariableJourney` can be used:
         void context() {
             //executed once before all variants and all steps of each variant
         }
+        
+        @BeforeVariant
+        void variantContext() {
+            //executed before each variant
+        }
 
         @BeforeEach
         void stepContext() {

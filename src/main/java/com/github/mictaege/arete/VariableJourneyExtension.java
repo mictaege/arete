@@ -1,5 +1,6 @@
 package com.github.mictaege.arete;
 
+import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ClassTemplateInvocationContext;
 import org.junit.jupiter.api.extension.ClassTemplateInvocationContextProvider;
 import org.junit.jupiter.api.extension.ConditionEvaluationResult;
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.extension.ExecutionCondition;
 import org.junit.jupiter.api.extension.Extension;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
@@ -76,7 +78,63 @@ public class VariableJourneyExtension implements ClassTemplateInvocationContextP
 
         @Override
         public List<Extension> getAdditionalExtensions() {
-            return List.of(new JourneyVariantCondition(variant));
+            return List.of(
+                    new BeforeVariantCallback(variant),
+                    new JourneyVariantCondition(variant)
+            );
+        }
+
+    }
+
+    private static class BeforeVariantCallback implements BeforeEachCallback {
+
+        private final String variant;
+
+        private BeforeVariantCallback(final String variant) {
+            this.variant = variant;
+        }
+
+        @Override
+        public void beforeEach(final ExtensionContext context) throws Exception {
+            final ExtensionContext variantContext = context.getParent().orElse(context);
+            final ExtensionContext.Store store = variantContext.getStore(
+                    ExtensionContext.Namespace.create(VariableJourneyExtension.class, variant)
+            );
+
+            final String alreadyExecutedKey = "beforeVariantExecuted";
+
+            if (store.get(alreadyExecutedKey, Boolean.class) != null) {
+                return;
+            }
+
+            final Object testInstance = context.getRequiredTestInstance();
+            final Class<?> testClass = context.getRequiredTestClass();
+
+            final List<Method> beforeVariantMethods = methodsOf(testClass)
+                    .filter(method -> findAnnotation(method, BeforeVariant.class).isPresent())
+                    .toList();
+
+            for (final Method method : beforeVariantMethods) {
+                invoke(method, testInstance);
+            }
+
+            store.put(alreadyExecutedKey, true);
+        }
+
+        private void invoke(final Method method, final Object testInstance) throws Exception {
+            try {
+                method.setAccessible(true);
+                method.invoke(testInstance);
+            } catch (final InvocationTargetException e) {
+                final Throwable cause = e.getCause();
+                if (cause instanceof Exception exception) {
+                    throw exception;
+                }
+                if (cause instanceof Error error) {
+                    throw error;
+                }
+                throw e;
+            }
         }
 
     }
