@@ -1,8 +1,12 @@
 package com.github.mictaege.arete;
 
-import org.junit.jupiter.api.Test;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import java.lang.annotation.*;
+import org.junit.jupiter.api.Test;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
@@ -15,4 +19,6 @@ public @interface Step {
     String desc() default "";
 
     String[] variant() default "";
+
+    String phase() default "";
 }

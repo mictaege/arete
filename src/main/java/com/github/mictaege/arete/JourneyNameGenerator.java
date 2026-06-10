@@ -28,7 +28,7 @@ public class JourneyNameGenerator implements DisplayNameGenerator {
 
     @Override
     public String generateDisplayNameForMethod(List<Class<?>> enclosingInstanceTypes, final Class<?> testClass, final Method testMethod) {
-        return desc(testMethod)
+        return desc(testMethod).map(d -> prefix(testMethod) + d)
                 .orElse(prefix(testMethod) + toWords(testMethod.getName(), CAPITALIZE_FIRST));
     }
 
@@ -47,7 +47,11 @@ public class JourneyNameGenerator implements DisplayNameGenerator {
     }
 
     private String prefix(final Method testMethod) {
-        return "⏵️ ";
+        final AtomicReference<String> phase = new AtomicReference<>("");
+        findAnnotation(testMethod, Step.class).ifPresent(i -> {
+            phase.set(i.phase());
+        });
+        return ofNullable(phase.get()).map(Strings::emptyToNull).map(p -> p + " ").orElse("") + "⏵️ ";
     }
 
 }

@@ -1,18 +1,19 @@
 package com.github.mictaege.arete;
 
-import com.google.common.base.Strings;
-import org.junit.jupiter.api.DisplayNameGenerator;
+import static com.github.mictaege.arete.NamingTools.Capitalizer.CAPITALIZE_ALL;
+import static com.github.mictaege.arete.NamingTools.Capitalizer.CAPITALIZE_FIRST;
+import static com.github.mictaege.arete.NamingTools.toWords;
+import static java.util.Optional.ofNullable;
+import static org.junit.platform.commons.support.AnnotationSupport.findAnnotation;
 
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.github.mictaege.arete.NamingTools.Capitalizer.CAPITALIZE_ALL;
-import static com.github.mictaege.arete.NamingTools.Capitalizer.CAPITALIZE_FIRST;
-import static com.github.mictaege.arete.NamingTools.toWords;
-import static java.util.Optional.ofNullable;
-import static org.junit.platform.commons.support.AnnotationSupport.findAnnotation;
+import org.junit.jupiter.api.DisplayNameGenerator;
+
+import com.google.common.base.Strings;
 
 public class VariableJourneyNameGenerator implements DisplayNameGenerator {
 
@@ -29,7 +30,7 @@ public class VariableJourneyNameGenerator implements DisplayNameGenerator {
 
     @Override
     public String generateDisplayNameForMethod(List<Class<?>> enclosingInstanceTypes, final Class<?> testClass, final Method testMethod) {
-        return desc(testMethod)
+        return desc(testMethod).map(d -> prefix(testMethod) + d)
                 .orElse(prefix(testMethod) + toWords(testMethod.getName(), CAPITALIZE_FIRST));
     }
 
@@ -48,7 +49,11 @@ public class VariableJourneyNameGenerator implements DisplayNameGenerator {
     }
 
     private String prefix(final Method testMethod) {
-        return "⏵️ ";
+        final AtomicReference<String> phase = new AtomicReference<>("");
+        findAnnotation(testMethod, Step.class).ifPresent(i -> {
+            phase.set(i.phase());
+        });
+        return ofNullable(phase.get()).map(Strings::emptyToNull).map(p -> p + " ").orElse("") + "⏵️ ";
     }
 
 }

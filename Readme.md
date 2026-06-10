@@ -112,14 +112,61 @@ Instead, every executable method is annotated with `@Step`.
 This is useful when the specification should read like a business process, user journey or workflow,
 especially if the distinction between setup, action and expectation would makes the story harder to follow.
 
+Steps could be grouped semantically into phases or sections, this might be useful for larger Journeys.
+
+```Java
+@Spec class ComplaintMediationSpec {
+    @Journey
+    class RefundNotPaid {
+
+        class Phase {
+            static final String COMPLAINING = "Traveller complains";
+            static final String REFUND = "Refunding";
+        }
+        
+        @BeforeAll
+        void context() {
+            //executed once before all steps in the journey
+        }
+
+        @BeforeEach
+        void stepContext() {
+            //executed before each single step
+        }
+
+        @Step(value = 1, phase = Phase.COMPLAINING)
+        void anAccommodationIsToldToPayARefund() {
+            //...
+        }
+
+        @Step(value = 2, phase = Phase.COMPLAINING)
+        void afterEnoughTimeTheTravelerHasNotReceivedAnyRefund() {
+            //...
+        }
+
+        @Step(value = 3, phase = Phase.COMPLAINING)
+        void theTravelerComplainsAboutTheLackOfARefund() {
+            //...
+        }
+
+        @Step(value = 4, phase = Phase.REFUND)
+        void theAgencyPaysTheRefundOnBehalfOfTheAccommodation() {
+            //...
+        }
+    }
+}
+```
+
 For flows with alternative paths, `@VariableJourney` can be used:
 ```Java
 @Spec class ComplaintMediationSpec {
     @VariableJourney
     class ComplaintMediation {
 
-        static final String JUSTIFIED_COMPLAINT = "Justified Complaint";
-        static final String UNJUSTIFIED_COMPLAINT = "Unjustified Complaint";
+        class Variant {
+            static final String JUSTIFIED = "Justified Complaint";
+            static final String UNJUSTIFIED = "Unjustified Complaint";
+        }
 
         @BeforeAll
         void context() {
@@ -146,12 +193,12 @@ For flows with alternative paths, `@VariableJourney` can be used:
             //...
         }
 
-        @Step(value = 3, variant = JUSTIFIED_COMPLAINT)
+        @Step(value = 3, variant = Variant.JUSTIFIED)
         void theTravellerComplainsAboutAMissingFacilityThatHasBeenOffered() {
             //...
         }
 
-        @Step(value = 3, variant = UNJUSTIFIED_COMPLAINT)
+        @Step(value = 3, variant = Variant.UNJUSTIFIED)
         void theTravellerComplainsAboutAMissingFacilityThatHasNotBeenOffered() {
             //...
         }
