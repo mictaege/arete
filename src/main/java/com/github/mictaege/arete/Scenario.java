@@ -22,7 +22,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 @TestInstance(PER_CLASS)
 public @interface Scenario {
 
-    int value() default 2;
+    int value() default 3;
 
     String desc() default "";
 

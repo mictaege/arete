@@ -22,7 +22,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 @TestInstance(PER_METHOD)
 public @interface Describe {
 
-    int value() default 1;
+    int value() default 2;
 
     String desc() default "";
 

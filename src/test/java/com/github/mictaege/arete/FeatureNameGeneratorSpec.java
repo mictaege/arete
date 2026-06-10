@@ -7,6 +7,8 @@ import com.github.mictaege.arete.CalculatorGherkinStyleSpec.Addition;
 import com.github.mictaege.arete.CalculatorGherkinStyleSpec.Addition.ShouldAddTwoNumbers;
 import com.github.mictaege.arete.CalculatorGherkinStyleSpec.Subtracting;
 
+import java.util.List;
+
 @Spec class FeatureNameGeneratorSpec {
 
     FeatureNameGenerator generator = new FeatureNameGenerator();
@@ -22,12 +24,12 @@ import com.github.mictaege.arete.CalculatorGherkinStyleSpec.Subtracting;
     @Describe class DisplayNameGenerationForNestedClass {
 
         @ItShould void takeExplicitDescriptionIfPresent() {
-            final String displayName = generator.generateDisplayNameForNestedClass(Subtracting.class);
+            final String displayName = generator.generateDisplayNameForNestedClass(List.of(), Subtracting.class);
             assertThat(displayName, is("Feature: Subtracting numbers"));
         }
 
         @ItShould void deriveFeatureDisplayFromClassName() {
-            final String displayName = generator.generateDisplayNameForNestedClass(Addition.class);
+            final String displayName = generator.generateDisplayNameForNestedClass(List.of(), Addition.class);
             assertThat(displayName, is("Feature: Addition"));
         }
     }
@@ -36,7 +38,7 @@ import com.github.mictaege.arete.CalculatorGherkinStyleSpec.Subtracting;
 
         @ItShould void deriveDisplayFromMethodName() throws NoSuchMethodException {
             final Class<ShouldAddTwoNumbers> clazz = ShouldAddTwoNumbers.class;
-            final String displayName = generator.generateDisplayNameForMethod(clazz, clazz.getDeclaredMethod("theResultShouldBeCorrect"));
+            final String displayName = generator.generateDisplayNameForMethod(List.of(), clazz, clazz.getDeclaredMethod("theResultShouldBeCorrect"));
             assertThat(displayName, is("the result should be correct"));
         }
     }

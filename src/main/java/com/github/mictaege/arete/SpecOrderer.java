@@ -21,6 +21,12 @@ public class SpecOrderer implements MethodOrderer {
         descriptor.findAnnotation(Feature.class).ifPresent(f -> {
             order.set(f.value());
         });
+        descriptor.findAnnotation(Journey.class).ifPresent(f -> {
+            order.set(f.value());
+        });
+        descriptor.findAnnotation(VariableJourney.class).ifPresent(f -> {
+            order.set(f.value());
+        });
         descriptor.findAnnotation(Describe.class).ifPresent(d -> {
             order.set(d.value());
         });

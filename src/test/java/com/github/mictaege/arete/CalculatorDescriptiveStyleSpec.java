@@ -45,7 +45,7 @@ import com.google.common.base.Joiner;
 
             void subtractTwoNumbersData(final ExampleGridSource s) {
                 s.row(s.given(10),  s.given(3), s.then(7));
-                s.row(s.given(10),  s.given(10), s.then(1));
+                s.row(s.given(10),  s.given(10), s.then(0));
                 s.row(s.given(10),  s.given(17), s.then(-7));
                 s.row(s.given(-5),  s.given(5), s.then(-10));
                 s.row(s.given(-5),  s.given(-5), s.then(0));

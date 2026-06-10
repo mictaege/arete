@@ -1,7 +1,7 @@
 package com.github.mictaege.arete;
 
 import static com.github.mictaege.arete.NamingTools.Capitalizer.CAPITALIZE_ALL;
-import static com.github.mictaege.arete.NamingTools.Capitalizer.UN_CAPITALIZE_ALL;
+import static com.github.mictaege.arete.NamingTools.Capitalizer.CAPITALIZE_FIRST;
 import static com.github.mictaege.arete.NamingTools.toWords;
 import static java.util.Optional.ofNullable;
 import static org.junit.platform.commons.support.AnnotationSupport.findAnnotation;
@@ -15,7 +15,7 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 
 import com.google.common.base.Strings;
 
-public class DescribeNameGenerator implements DisplayNameGenerator {
+public class VariableJourneyNameGenerator implements DisplayNameGenerator {
 
     @Override
     public String generateDisplayNameForClass(final Class<?> testClass) {
@@ -25,47 +25,35 @@ public class DescribeNameGenerator implements DisplayNameGenerator {
     @Override
     public String generateDisplayNameForNestedClass(List<Class<?>> enclosingInstanceTypes, final Class<?> nestedClass) {
         return desc(nestedClass)
-                .orElse("Describe: " + toWords(nestedClass.getSimpleName(), CAPITALIZE_ALL));
+                .orElse("Journey: " + toWords(nestedClass.getSimpleName(), CAPITALIZE_ALL));
     }
 
     @Override
     public String generateDisplayNameForMethod(List<Class<?>> enclosingInstanceTypes, final Class<?> testClass, final Method testMethod) {
-        return desc(testMethod)
-                .orElse(prefix(testMethod) + toWords(testMethod.getName(), UN_CAPITALIZE_ALL));
+        return desc(testMethod).map(d -> prefix(testMethod) + d)
+                .orElse(prefix(testMethod) + toWords(testMethod.getName(), CAPITALIZE_FIRST));
     }
 
     private Optional<String> desc(final Class<?> nestedClass) {
-        return findAnnotation(nestedClass, Describe.class)
-                .map(Describe::desc)
+        return findAnnotation(nestedClass, VariableJourney.class)
+                .map(VariableJourney::desc)
                 .map(Strings::emptyToNull);
     }
 
     private Optional<String> desc(final Method testMethod) {
         final AtomicReference<String> desc = new AtomicReference<>("");
-        findAnnotation(testMethod, ItShould.class).ifPresent(i -> {
+        findAnnotation(testMethod, Step.class).ifPresent(i -> {
             desc.set(i.desc());
-        });
-        findAnnotation(testMethod, Examples.class).ifPresent(e -> {
-            desc.set(e.desc());
-        });
-        findAnnotation(testMethod, ExampleGrid.class).ifPresent(e -> {
-            desc.set(e.desc());
-        });
-        findAnnotation(testMethod, ExampleCsv.class).ifPresent(e -> {
-            desc.set(e.desc());
         });
         return ofNullable(desc.get()).map(Strings::emptyToNull);
     }
 
     private String prefix(final Method testMethod) {
-        final AtomicReference<String> prefix = new AtomicReference<>("");
-        findAnnotation(testMethod, ItShould.class).ifPresent(g -> {
-            prefix.set("It should ");
+        final AtomicReference<String> phase = new AtomicReference<>("");
+        findAnnotation(testMethod, Step.class).ifPresent(i -> {
+            phase.set(i.phase());
         });
-        findAnnotation(testMethod, Examples.class).ifPresent(g -> {
-            prefix.set("Examples: ");
-        });
-        return prefix.get();
+        return ofNullable(phase.get()).map(Strings::emptyToNull).map(p -> p + " ").orElse("") + "⏵️ ";
     }
 
 }

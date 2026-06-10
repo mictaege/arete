@@ -7,6 +7,8 @@ import com.github.mictaege.arete.CalculatorGherkinStyleSpec.Addition.ShouldAddTw
 import com.github.mictaege.arete.CalculatorGherkinStyleSpec.Addition.Should_Add_5_To_10;
 import com.github.mictaege.arete.CalculatorGherkinStyleSpec.Subtracting.ShouldSubtractTwoNumbers;
 
+import java.util.List;
+
 @Spec class ScenarioNameGeneratorSpec {
 
     ScenarioNameGenerator generator = new ScenarioNameGenerator();
@@ -22,12 +24,12 @@ import com.github.mictaege.arete.CalculatorGherkinStyleSpec.Subtracting.ShouldSu
     @Describe class DisplayNameGenerationForNestedClass {
 
         @ItShould void takeExplicitDescriptionIfPresent() {
-            final String displayName = generator.generateDisplayNameForNestedClass(ShouldAddTwoNumbers.class);
+            final String displayName = generator.generateDisplayNameForNestedClass(List.of(), ShouldAddTwoNumbers.class);
             assertThat(displayName, is("Scenario: Should Add Two Numbers"));
         }
 
         @ItShould void deriveScenarioDisplayFromClassName() {
-            final String displayName = generator.generateDisplayNameForNestedClass(ShouldSubtractTwoNumbers.class);
+            final String displayName = generator.generateDisplayNameForNestedClass(List.of(), ShouldSubtractTwoNumbers.class);
             assertThat(displayName, is("Scenario: Should subtract two numbers leading to a negative result"));
         }
     }
@@ -36,37 +38,37 @@ import com.github.mictaege.arete.CalculatorGherkinStyleSpec.Subtracting.ShouldSu
 
         @ItShould void takeExplicitDescriptionIfPresent() throws NoSuchMethodException {
             final Class<ShouldSubtractTwoNumbers> clazz = ShouldSubtractTwoNumbers.class;
-            final String displayName = generator.generateDisplayNameForMethod(clazz, clazz.getDeclaredMethod("aFirstNumber"));
+            final String displayName = generator.generateDisplayNameForMethod(List.of(), clazz, clazz.getDeclaredMethod("aFirstNumber"));
             assertThat(displayName, is("Given the number 5"));
         }
 
         @ItShould void deriveGivenDisplayFromMethodName() throws NoSuchMethodException {
             final Class<Should_Add_5_To_10> clazz = Should_Add_5_To_10.class;
-            final String displayName = generator.generateDisplayNameForMethod(clazz, clazz.getDeclaredMethod("five"));
+            final String displayName = generator.generateDisplayNameForMethod(List.of(), clazz, clazz.getDeclaredMethod("five"));
             assertThat(displayName, is("Given five"));
         }
 
         @ItShould void deriveAndGivenDisplayFromMethodName() throws NoSuchMethodException {
             final Class<Should_Add_5_To_10> clazz = Should_Add_5_To_10.class;
-            final String displayName = generator.generateDisplayNameForMethod(clazz, clazz.getDeclaredMethod("ten"));
+            final String displayName = generator.generateDisplayNameForMethod(List.of(), clazz, clazz.getDeclaredMethod("ten"));
             assertThat(displayName, is("And ten"));
         }
 
         @ItShould void deriveWhenDisplayFromMethodName() throws NoSuchMethodException {
             final Class<Should_Add_5_To_10> clazz = Should_Add_5_To_10.class;
-            final String displayName = generator.generateDisplayNameForMethod(clazz, clazz.getDeclaredMethod("addingTogether"));
+            final String displayName = generator.generateDisplayNameForMethod(List.of(), clazz, clazz.getDeclaredMethod("addingTogether"));
             assertThat(displayName, is("When adding together"));
         }
 
         @ItShould void deriveThenDisplayFromMethodName() throws NoSuchMethodException {
             final Class<Should_Add_5_To_10> clazz = Should_Add_5_To_10.class;
-            final String displayName = generator.generateDisplayNameForMethod(clazz, clazz.getDeclaredMethod("theResultShouldBeCorrect"));
+            final String displayName = generator.generateDisplayNameForMethod(List.of(), clazz, clazz.getDeclaredMethod("theResultShouldBeCorrect"));
             assertThat(displayName, is("Then the result should be correct"));
         }
 
         @ItShould void deriveAndThenDisplayFromMethodName() throws NoSuchMethodException {
             final Class<Should_Add_5_To_10> clazz = Should_Add_5_To_10.class;
-            final String displayName = generator.generateDisplayNameForMethod(clazz, clazz.getDeclaredMethod("not_be_an_equal_number"));
+            final String displayName = generator.generateDisplayNameForMethod(List.of(), clazz, clazz.getDeclaredMethod("not_be_an_equal_number"));
             assertThat(displayName, is("And not be an equal number"));
         }
     }
