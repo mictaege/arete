@@ -7,4 +7,6 @@ import java.lang.annotation.*;
 @Documented
 public @interface BeforeVariant {
 
+    String[] variant() default "";
+
 }

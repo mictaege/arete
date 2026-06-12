@@ -1,12 +1,6 @@
 package com.github.mictaege.arete;
 
-import org.junit.jupiter.api.extension.BeforeEachCallback;
-import org.junit.jupiter.api.extension.ClassTemplateInvocationContext;
-import org.junit.jupiter.api.extension.ClassTemplateInvocationContextProvider;
-import org.junit.jupiter.api.extension.ConditionEvaluationResult;
-import org.junit.jupiter.api.extension.ExecutionCondition;
-import org.junit.jupiter.api.extension.Extension;
-import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -60,14 +54,7 @@ public class VariableJourneyExtension implements ClassTemplateInvocationContextP
         );
     }
 
-    private static class JourneyVariantInvocationContext implements ClassTemplateInvocationContext {
-
-        private final String variant;
-
-        private JourneyVariantInvocationContext(final String variant) {
-            this.variant = variant;
-        }
-
+    private record JourneyVariantInvocationContext(String variant) implements ClassTemplateInvocationContext {
         @Override
         public String getDisplayName(final int invocationIndex) {
             if (variant.isEmpty()) {
@@ -83,17 +70,9 @@ public class VariableJourneyExtension implements ClassTemplateInvocationContextP
                     new JourneyVariantCondition(variant)
             );
         }
-
     }
 
-    private static class BeforeVariantCallback implements BeforeEachCallback {
-
-        private final String variant;
-
-        private BeforeVariantCallback(final String variant) {
-            this.variant = variant;
-        }
-
+    private record BeforeVariantCallback(String variant) implements BeforeEachCallback {
         @Override
         public void beforeEach(final ExtensionContext context) throws Exception {
             final ExtensionContext variantContext = context.getParent().orElse(context);
@@ -111,7 +90,9 @@ public class VariableJourneyExtension implements ClassTemplateInvocationContextP
             final Class<?> testClass = context.getRequiredTestClass();
 
             final List<Method> beforeVariantMethods = methodsOf(testClass)
-                    .filter(method -> findAnnotation(method, BeforeVariant.class).isPresent())
+                    .filter(method -> findAnnotation(method, BeforeVariant.class)
+                            .map(this::matchesVariant)
+                            .orElse(false))
                     .toList();
 
             for (final Method method : beforeVariantMethods) {
@@ -121,7 +102,15 @@ public class VariableJourneyExtension implements ClassTemplateInvocationContextP
             store.put(alreadyExecutedKey, true);
         }
 
-        private void invoke(final Method method, final Object testInstance) throws Exception {
+        private boolean matchesVariant(final BeforeVariant beforeVariant) {
+            final List<String> beforeVariants = Stream.of(beforeVariant.variant())
+                    .map(String::trim)
+                    .filter(v -> !v.isBlank())
+                    .toList();
+            return beforeVariants.isEmpty() || beforeVariants.contains(variant);
+        }
+
+        private static void invoke(final Method method, final Object testInstance) throws Exception {
             try {
                 method.setAccessible(true);
                 method.invoke(testInstance);
@@ -136,17 +125,9 @@ public class VariableJourneyExtension implements ClassTemplateInvocationContextP
                 throw e;
             }
         }
-
     }
 
-    private static class JourneyVariantCondition implements ExecutionCondition {
-
-        private final String selectedVariant;
-
-        private JourneyVariantCondition(final String selectedVariant) {
-            this.selectedVariant = selectedVariant;
-        }
-
+    private record JourneyVariantCondition(String selectedVariant) implements ExecutionCondition {
         @Override
         public ConditionEvaluationResult evaluateExecutionCondition(final ExtensionContext context) {
             final Optional<Method> testMethod = context.getTestMethod();
@@ -179,7 +160,6 @@ public class VariableJourneyExtension implements ClassTemplateInvocationContextP
                     "Step variants " + stepVariants + " does not match journey variant " + selectedVariant
             );
         }
-
     }
 
 }
