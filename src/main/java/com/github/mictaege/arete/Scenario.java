@@ -8,20 +8,20 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Nested
-@TestMethodOrder(ScenarioOrderer.class)
+@TestClassOrder(AreteOrderer.class)
+@TestMethodOrder(AreteOrderer.class)
 @DisplayNameGeneration(ScenarioNameGenerator.class)
 @TestInstance(PER_CLASS)
 public @interface Scenario {
 
+    int order() default 1;
+    /** short hand for order. */
     int value() default 3;
 
     String desc() default "";

@@ -134,22 +134,22 @@ Steps could be grouped semantically into phases or sections, this might be usefu
             //executed before each single step
         }
 
-        @Step(value = 1, phase = Phase.COMPLAINING)
+        @Step(order = 1, phase = Phase.COMPLAINING)
         void anAccommodationIsToldToPayARefund() {
             //...
         }
 
-        @Step(value = 2, phase = Phase.COMPLAINING)
+        @Step(order = 2, phase = Phase.COMPLAINING)
         void afterEnoughTimeTheTravelerHasNotReceivedAnyRefund() {
             //...
         }
 
-        @Step(value = 3, phase = Phase.COMPLAINING)
+        @Step(order = 3, phase = Phase.COMPLAINING)
         void theTravelerComplainsAboutTheLackOfARefund() {
             //...
         }
 
-        @Step(value = 4, phase = Phase.REFUND)
+        @Step(order = 4, phase = Phase.REFUND)
         void theAgencyPaysTheRefundOnBehalfOfTheAccommodation() {
             //...
         }
@@ -193,12 +193,12 @@ For flows with alternative paths, `@VariableJourney` can be used:
             //...
         }
 
-        @Step(value = 3, variant = Variant.JUSTIFIED)
+        @Step(order = 3, variant = Variant.JUSTIFIED)
         void theTravellerComplainsAboutAMissingFacilityThatHasBeenOffered() {
             //...
         }
 
-        @Step(value = 3, variant = Variant.UNJUSTIFIED)
+        @Step(order = 3, variant = Variant.UNJUSTIFIED)
         void theTravellerComplainsAboutAMissingFacilityThatHasNotBeenOffered() {
             //...
         }
@@ -313,7 +313,7 @@ If a specification consists of several consecutive Given-When-Then sequences, th
 
 ## Execution Order in Journey Style
 
-In Journey style, the order of execution is defined with the `value` of the `@Step` annotation. Steps are executed simply from the lowest value to the highest value.
+In Journey style, the order of execution is defined with the `order` of the `@Step` annotation (respectively it's short-form `value`). Steps are executed simply from the lowest value to the highest value.
 
 A `@VariableJourney` uses the same step ordering, but can additionally split the journey into variants:
 

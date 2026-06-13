@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static java.lang.Math.max;
 import static org.junit.platform.commons.support.AnnotationSupport.findAnnotation;
 
 public class VariableJourneyExtension implements ClassTemplateInvocationContextProvider {
@@ -187,7 +188,7 @@ public class VariableJourneyExtension implements ClassTemplateInvocationContextP
 
         private static int getOrder(final Method method) {
             return findAnnotation(method, Step.class)
-                    .map(Step::value)
+                    .map(s -> max(s.value(), s.order()))
                     .orElse(Order.DEFAULT);
         }
     }
