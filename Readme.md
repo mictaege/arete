@@ -5,7 +5,7 @@
 [![Maven Central](https://img.shields.io/maven-central/v/org.junit.jupiter/junit-jupiter/6.0.2.svg?color=25a162&label=Jupiter)](https://central.sonatype.com/artifact/org.junit.jupiter/junit-jupiter/5.10.2)
 [![Apache License 2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 
-Arete is a lightweight JUnit 5 extension that enables a BDD testing style by describing test cases as specifications and scenarios.
+Arete is a lightweight JUnit 6 extension that enables a BDD testing style by describing test cases as specifications and scenarios.
 
 ![Test run](TestRun.png)
 
