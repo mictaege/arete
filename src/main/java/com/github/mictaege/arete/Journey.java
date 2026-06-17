@@ -1,9 +1,6 @@
 package com.github.mictaege.arete;
 
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 
 import java.lang.annotation.*;
 
@@ -13,11 +10,14 @@ import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Nested
-@TestMethodOrder(JourneyOrderer.class)
+@TestClassOrder(AreteOrderer.class)
+@TestMethodOrder(AreteOrderer.class)
 @DisplayNameGeneration(JourneyNameGenerator.class)
 @TestInstance(PER_CLASS)
 public @interface Journey {
 
+    int order() default 1;
+    /** short hand for order. */
     int value() default 1;
 
     String desc() default "";

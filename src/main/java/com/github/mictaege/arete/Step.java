@@ -14,6 +14,8 @@ import org.junit.jupiter.api.Test;
 @Test
 public @interface Step {
 
+    int order() default 1;
+    /** short hand for order. */
     int value() default 1;
 
     String desc() default "";

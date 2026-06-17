@@ -7,12 +7,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.TestClassOrder;
 import org.junit.jupiter.api.TestMethodOrder;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@TestMethodOrder(SpecOrderer.class)
+@TestClassOrder(AreteOrderer.class)
+@TestMethodOrder(AreteOrderer.class)
 @DisplayNameGeneration(SpecNameGenerator.class)
 public @interface Spec {
 

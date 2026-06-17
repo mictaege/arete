@@ -17,7 +17,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @TestTemplate
 public @interface ExampleCsv {
 
-    int order() default Order.DEFAULT;
+    int order() default 1;
+    /** short hand for order. */
+    int value() default Order.DEFAULT;
 
     String desc() default "";
 

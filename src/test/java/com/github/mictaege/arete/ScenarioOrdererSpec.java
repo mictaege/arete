@@ -14,7 +14,7 @@ import org.mockito.Mock;
 
 @Spec class ScenarioOrdererSpec {
 
-    ScenarioOrderer orderer = new ScenarioOrderer();
+    AreteOrderer orderer = new AreteOrderer();
 
     @Scenario class OrderByDefault {
         @Mock
