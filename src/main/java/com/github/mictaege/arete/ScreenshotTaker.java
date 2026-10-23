@@ -12,6 +12,8 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 
 public interface ScreenshotTaker extends Normalizer<ExtensionContext, String> {
 
+    String SCREENSHOTS_DIR_PROPERTY = "arete.screenshotsDir";
+
     enum TestResult {
         DISABLED, SUCCESS, ABORTION, FAILURE
     }
@@ -32,9 +34,12 @@ public interface ScreenshotTaker extends Normalizer<ExtensionContext, String> {
     }
 
     default File getScreenshotsDir() {
-        final File tmpDir = new File(new File(System.getProperty("java.io.tmpdir")), "arete_screenshots");
-        tmpDir.mkdirs();
-        return tmpDir;
+        final String configuredDir = System.getProperty(SCREENSHOTS_DIR_PROPERTY);
+        final File screenshotsDir = configuredDir == null || configuredDir.isBlank()
+                ? new File(new File(System.getProperty("java.io.tmpdir")), "arete_screenshots")
+                : new File(configuredDir);
+        screenshotsDir.mkdirs();
+        return screenshotsDir;
     }
 
     default File getScreenshotFile(final ExtensionContext extensionContext) {
