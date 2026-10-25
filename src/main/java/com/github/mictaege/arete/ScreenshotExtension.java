@@ -37,19 +37,18 @@ public class ScreenshotExtension implements TestWatcher {
     }
 
     private void takeScreenshot(final ExtensionContext context, final TestResult result) {
-        if (!screenshotTaker.takeWhen().contains(result)) {
-            return;
-        }
-        try {
-            final byte[] imageBytes = screenshotTaker.getImageBytes();
-            if (imageBytes.length > 0) {
-                context.publishFile(
-                        screenshotTaker.getScreenshotName(),
-                        screenshotTaker.getMediaType(),
-                        path -> Files.write(path, imageBytes));
+        if (screenshotTaker.takeWhen().contains(result)) {
+            try {
+                final byte[] imageBytes = screenshotTaker.getImageBytes();
+                if (imageBytes.length > 0) {
+                    context.publishFile(
+                            screenshotTaker.getScreenshotName(),
+                            screenshotTaker.getMediaType(),
+                            path -> Files.write(path, imageBytes));
+                }
+            } catch (final Exception ignore) {
+                //nop
             }
-        } catch (final Exception ignore) {
-            //nop
         }
     }
 

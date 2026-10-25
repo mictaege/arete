@@ -21,7 +21,7 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.function.ThrowingConsumer;
 import org.junit.jupiter.api.io.TempDir;
 
-class ScreenshotExtensionSpec {
+class ScreenshotExtensionTest {
 
     @TempDir
     Path tempDir;
