@@ -1,15 +1,12 @@
 package com.github.mictaege.arete;
 
-import static java.util.Optional.of;
-import static java.util.Optional.ofNullable;
-
+import java.nio.file.Files;
 import java.util.Optional;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestWatcher;
 
 import com.github.mictaege.arete.ScreenshotTaker.TestResult;
-import com.google.common.io.Files;
 
 public class ScreenshotExtension implements TestWatcher {
 
@@ -41,18 +38,17 @@ public class ScreenshotExtension implements TestWatcher {
 
     private void takeScreenshot(final ExtensionContext context, final TestResult result) {
         if (screenshotTaker.takeWhen().contains(result)) {
-            ofNullable(screenshotTaker).ifPresent(t -> {
-                of(t)
-                        .map(ScreenshotTaker::getImageBytes)
-                        .filter(b -> b.length > 0)
-                        .ifPresent(b -> {
-                            try {
-                                Files.asByteSink(t.getScreenshotFile(context)).write(b);
-                            } catch (final Exception ignore) {
-                                //nop
-                            }
-                        });
-            });
+            try {
+                final byte[] imageBytes = screenshotTaker.getImageBytes();
+                if (imageBytes.length > 0) {
+                    context.publishFile(
+                            screenshotTaker.getScreenshotName(),
+                            screenshotTaker.getMediaType(),
+                            path -> Files.write(path, imageBytes));
+                }
+            } catch (final Exception ignore) {
+                //nop
+            }
         }
     }
 
