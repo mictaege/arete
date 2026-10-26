@@ -2,15 +2,15 @@ package com.github.mictaege.arete;
 
 import static com.github.mictaege.arete.ScreenshotTaker.TestResult.FAILURE;
 
-import java.io.File;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
-import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.MediaType;
 
-public interface ScreenshotTaker extends Normalizer<ExtensionContext, String> {
+public interface ScreenshotTaker {
+
+    String SCREENSHOT_NAME_PREFIX = "arete-screenshot";
 
     enum TestResult {
         DISABLED, SUCCESS, ABORTION, FAILURE
@@ -22,23 +22,20 @@ public interface ScreenshotTaker extends Normalizer<ExtensionContext, String> {
 
     byte[] getImageBytes();
 
-    @Override
-    default String normalize(final ExtensionContext extensionContext) {
-        return new UniqueIdToHashNormalizer().normalize(extensionContext.getUniqueId());
-    }
-
     default String getFileExtension() {
         return "png";
     }
 
-    default File getScreenshotsDir() {
-        final File tmpDir = new File(new File(System.getProperty("java.io.tmpdir")), "arete_screenshots");
-        tmpDir.mkdirs();
-        return tmpDir;
+    default String getScreenshotName() {
+        return SCREENSHOT_NAME_PREFIX + "." + getFileExtension();
     }
 
-    default File getScreenshotFile(final ExtensionContext extensionContext) {
-        return new File(getScreenshotsDir(), normalize(extensionContext) + "." + getFileExtension());
+    default MediaType getMediaType() {
+        return switch (getFileExtension().toLowerCase(Locale.ROOT)) {
+            case "png" -> MediaType.IMAGE_PNG;
+            case "jpg", "jpeg" -> MediaType.IMAGE_JPEG;
+            default -> MediaType.APPLICATION_OCTET_STREAM;
+        };
     }
 
 }
