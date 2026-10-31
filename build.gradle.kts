@@ -5,7 +5,7 @@ plugins {
     `java-library`
     `maven-publish`
     signing
-    id("org.jreleaser") version "1.26.0"
+    id("org.jreleaser") version "1.27.0"
 }
 
 group = "io.github.mictaege"
