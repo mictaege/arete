@@ -5,14 +5,14 @@ plugins {
     `java-library`
     `maven-publish`
     signing
-    id("org.jreleaser") version "1.22.0"
+    id("org.jreleaser") version "1.26.0"
 }
 
 group = "io.github.mictaege"
 version = "2026.7"
 
 tasks.wrapper {
-    gradleVersion = "8.7"
+    gradleVersion = "9.8.2"
     distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -21,16 +21,16 @@ repositories {
 }
 
 dependencies {
-    implementation("org.junit.jupiter:junit-jupiter-api:6.0.2")
-    implementation("com.google.guava:guava:33.5.0-jre")
+    implementation("org.junit.jupiter:junit-jupiter-api:6.1.3")
+    implementation("com.google.guava:guava:33.7.2-jre")
     implementation("org.apache.commons:commons-text:1.15.0")
-    implementation("org.apache.commons:commons-lang3:3.20.0")
+    implementation("org.apache.commons:commons-lang3:3.21.0")
     implementation("org.apache.commons:commons-csv:1.14.1")
 
     testImplementation("org.hamcrest:hamcrest:3.0")
-    testImplementation("org.mockito:mockito-core:5.21.0")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:6.0.2")
-    testImplementation("org.junit.platform:junit-platform-launcher:6.0.2")
+    testImplementation("org.mockito:mockito-core:5.24.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:6.1.3")
+    testImplementation("org.junit.platform:junit-platform-launcher:6.1.3")
 }
 
 tasks.test {
