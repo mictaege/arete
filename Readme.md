@@ -560,6 +560,41 @@ class BookingProcessSpec {
 
 In the generated Arete report, these tags are listed on the tag page and can be used to search and filter specifications.
 
+## References
+
+Specifications, features, descriptions, scenarios and journeys can be linked to external references — e.g. requirements, user stories or issues of a tracking system — using the repeatable `@Ref` annotation.
+
+```Java
+@Spec
+@Ref("PROJ-100")
+class BookingProcessSpec {
+
+    @Scenario
+    @Ref(value = "PROJ-101", url = "https://tracker.example.com/PROJ-")
+    class RefundIsPaidOnTime {
+        ...
+    }
+}
+```
+
+The `url` attribute is a prefix: the `value` is appended to it, so `@Ref(value = "PROJ-101", url = "https://tracker.example.com/PROJ-")` links to `https://tracker.example.com/PROJ-101`. If the `url` contains a `{0}` placeholder, the placeholder is replaced by the `value` instead. A reference without a `url` is rendered as plain text.
+
+In the generated Arete report, references are shown as links on the specification pages. See [arete-gradle](http://github.com/mictaege/arete-gradle) for the Arete Gradle reporting plugin.
+
+Since `@Ref` can also annotate other annotations, domain-specific reference annotations can be composed the same way as tags with `@StereoType`:
+
+```Java
+@Target(TYPE)
+@Retention(RUNTIME)
+@Repeatable(GithubRefs.class)
+@Ref(url = "https://github.com/mictaege/arete-gradle/issues/")
+public @interface GithubRef {
+    String value();
+}
+```
+
+Usage: `@GithubRef("14")` refers to `https://github.com/mictaege/arete-gradle/issues/14`. See [arete-gradle-test](https://github.com/mictaege/arete-gradle-test/tree/master/src/test/java/com/github/mictaege/travel_agency) for a complete example.
+
 ## Examples
 
 Since it is often very helpful to illustrate a functionality with examples, such examples can be defined with Arete.
