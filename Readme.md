@@ -566,22 +566,22 @@ Specifications, features, descriptions, scenarios and journeys can be linked to 
 
 ```Java
 @Spec
-@Ref("PROJ-100")
+@Ref(value = "PROJ-100", url = "https://tracker.example.com/") //https://tracker.example.com/PROJ-100
 class BookingProcessSpec {
 
     @Scenario
-    @Ref(value = "PROJ-101", url = "https://tracker.example.com/PROJ-")
+    @Ref(value = "PROJ-101", url = "https://tracker.example.com/{0}/index.html") //https://tracker.example.com/PROJ-101/index.html
     class RefundIsPaidOnTime {
         ...
     }
 }
 ```
 
-The `url` attribute is a prefix: the `value` is appended to it, so `@Ref(value = "PROJ-101", url = "https://tracker.example.com/PROJ-")` links to `https://tracker.example.com/PROJ-101`. If the `url` contains a `{0}` placeholder, the placeholder is replaced by the `value` instead. A reference without a `url` is rendered as plain text.
+The `url` attribute is a pattern: a `{0}` placeholder in it is replaced by the `value`, so `@Ref(value = "PROJ-101", url = "https://tracker.example.com/{0}")` links to `https://tracker.example.com/PROJ-101`. Without a `{0}` placeholder the `url` is used as a prefix and the `value` is appended. A reference without a `url` is rendered as plain text.
 
-In the generated Arete report, references are shown as links on the specification pages. See [arete-gradle](http://github.com/mictaege/arete-gradle) for the Arete Gradle reporting plugin.
+In the generated Arete report, references are shown as links on the specification pages.
 
-Since `@Ref` can also annotate other annotations, domain-specific reference annotations can be composed the same way as tags with `@StereoType`:
+Since `@Ref` can also annotate other annotations, custom reference annotations can be composed for your needs:
 
 ```Java
 @Target(TYPE)
@@ -593,7 +593,7 @@ public @interface GithubRef {
 }
 ```
 
-Usage: `@GithubRef("14")` refers to `https://github.com/mictaege/arete-gradle/issues/14`. See [arete-gradle-test](https://github.com/mictaege/arete-gradle-test/tree/master/src/test/java/com/github/mictaege/travel_agency) for a complete example.
+Usage: `@GithubRef("14")` refers to `https://github.com/mictaege/arete-gradle/issues/14`.
 
 ## Examples
 

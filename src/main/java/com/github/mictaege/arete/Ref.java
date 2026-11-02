@@ -23,7 +23,7 @@ public @interface Ref {
     /** The reference id, e.g. "PROJ-123". Defaults to empty so composed annotations like {@code @GithubRef} can be meta-annotated with {@code @Ref}. */
     String value() default "";
 
-    /** An optional URL prefix of the reference. The {@code value} is appended to it, unless the url contains a {@code {0}} placeholder which is replaced by the value. */
+    /** An optional URL pattern of the reference. A {@code {0}} placeholder is replaced by the {@code value}; without a placeholder the url is used as a prefix and the {@code value} is appended. */
     String url() default "";
 
 }
