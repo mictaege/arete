@@ -1,0 +1,32 @@
+schema: spec-driven
+
+context: |
+  arete is a lightweight JUnit 6 extension that enables a BDD (Behaviour Driven Development)
+  testing style in Java by describing test cases as specifications and scenarios. It supports
+  several authoring styles (Gherkin-like, descriptive, "journey") on top of standard JUnit
+  Jupiter classes, using annotations such as @Spec and @Scenario.
+
+  Family: this is the CORE library of the arete family. The companion project `arete-gradle`
+  builds on it to provide Gradle-native HTML reporting; `arete-gradle-test` is a
+  sample/integration-test consumer of that plugin (composite build via includeBuild, so local
+  changes are validated end-to-end without publishing).
+
+  Stack: Java (src/main/java, tests in src/test/java), Gradle Kotlin DSL (build.gradle.kts);
+  build/test only via ./gradlew. `java-library` plugin; testing with JUnit Jupiter (the library
+  is itself a JUnit extension and its own test suite is the primary validation). Published via
+  org.jreleaser to Maven Central as io.github.mictaege:arete. License: Apache License 2.0.
+  Signing/Central Portal credentials come from Gradle properties/env — never hardcode or commit them.
+
+  Conventions for changes:
+  - Run ./gradlew test before considering a change complete.
+  - Package root com.github... (mirrors the GitHub origin).
+  - The public API (annotations and extension classes) is binary/source-compatibility sensitive:
+    arete-gradle reads this model to generate reports, so keep it stable; behavioral changes can
+    ripple into arete-gradle.
+  - Keep parity across the authoring styles where it makes sense.
+  - Favor the Gradle Kotlin DSL for build changes.
+
+  Capability specs live in openspec/specs/<capability>/spec.md (scenarios, journeys, descriptions,
+  examples, narratives, tags, refs, display-names, see-also, screenshots, lifecycle, nesting,
+  internals).
+  AGENTS.md maps areas to the spec to read before changing them. User-facing docs: Readme.md.
