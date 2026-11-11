@@ -523,6 +523,64 @@ class BookingProcessSpec {
 
 ![Test run](Narrative.png)
 
+## Attaching Files With Generated Test Output
+
+Steps and narratives can attach files they produced during the run — HTML dumps, API responses,
+logs, HAR files, aggregated summaries — so they show up in the Arete report next to the step or
+inside the narrative.
+
+### Attaching Files to a Step
+
+Use `StepContext` from within the step body:
+
+```Java
+@Spec class BookingSpec {
+
+    @Then
+    void theTravelerReceivesAnInvoice() {
+        // ...
+        StepContext.current().attach(
+                "invoice.txt",
+                MediaType.TEXT_PLAIN,
+                invoice.getBytes(StandardCharsets.UTF_8));
+    }
+
+}
+```
+
+The file name may not contain path separators (they are replaced with `_`). Attachments are
+published as JUnit file attachments under the `arete-attach.` namespace, copied into the report's
+`specs/` directory when the step is expanded, and opened in a new tab when clicked. A step can
+attach multiple files; the step shows a file icon in the report outline whenever it has
+attachments.
+
+### Attaching Files to a Narrative
+
+Use `NarrativeContext` from the class-level lifecycle of a `@Narrative`-annotated class — the
+constructor, `@BeforeAll` or `@AfterAll`:
+
+```Java
+@Spec
+@Narrative("As a traveler I want to book a room ...")
+class BookingSpec {
+
+    @AfterAll
+    static void attachBookingSummary() {
+        NarrativeContext.current().attach(
+                "booking-summary.json",
+                MediaType.APPLICATION_JSON,
+                summary.getBytes(StandardCharsets.UTF_8));
+    }
+
+}
+```
+
+Like step attachments, the file name may not contain path separators (they are replaced with `_`).
+Narrative attachments are published under the distinct `arete-narrative-attach.` namespace and
+rendered inside the narrative block of the report, on the same line as static
+`attachmentResourcePath` files. Calling `NarrativeContext.current()` outside a narrative scope
+(e.g. inside a test method) throws an `IllegalStateException`.
+
 ## Tags
 
 Arete uses JUnit tags to group and classify specifications, journeys, scenarios, desciptions and all other nested specification parts.
